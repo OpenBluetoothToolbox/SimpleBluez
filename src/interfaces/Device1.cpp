@@ -1,6 +1,6 @@
 #include "Device1.h"
 
-#include "base/Logger.h"
+#include "simpledbus/base/Logger.h"
 
 #include <iostream>
 

@@ -1,6 +1,6 @@
 #include "Adapter1.h"
 
-#include "base/Logger.h"
+#include "simpledbus/base/Logger.h"
 
 const std::string Adapter1::_interface_name = "org.bluez.Adapter1";
 

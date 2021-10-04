@@ -1,6 +1,6 @@
 #include "GattCharacteristic1.h"
 
-#include "base/Logger.h"
+#include "simpledbus/base/Logger.h"
 
 const std::string GattCharacteristic1::_interface_name = "org.bluez.GattCharacteristic1";
 

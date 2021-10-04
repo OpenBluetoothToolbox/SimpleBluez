@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SimpleDBus.h"
+#include "simpledbus/SimpleDBus.h"
 
 #include <string>
 #include <vector>

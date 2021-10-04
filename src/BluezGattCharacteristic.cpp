@@ -1,6 +1,6 @@
 #include "BluezGattCharacteristic.h"
 
-#include "base/Logger.h"
+#include "simpledbus/base/Logger.h"
 
 BluezGattCharacteristic::BluezGattCharacteristic(SimpleDBus::Connection* conn, std::string path,
                                                  SimpleDBus::Holder managed_interfaces)

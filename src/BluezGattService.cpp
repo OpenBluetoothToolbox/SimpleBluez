@@ -1,6 +1,6 @@
 #include "BluezGattService.h"
 
-#include "base/Logger.h"
+#include "simpledbus/base/Logger.h"
 
 BluezGattService::BluezGattService(SimpleDBus::Connection* conn, std::string path,
                                    SimpleDBus::Holder managed_interfaces)

@@ -1,26 +1,14 @@
 # SimpleBluez
 A simple C++ wrapper around Bluez with a commercially-friendly licence.
 
-**IMPORTANT NOTE**
-This library is a spin-off of the original [SimpleDBus](https://github.com/OpenBluetoothToolbox/SimpleDBus) library, which will be entirely focused on 
-the Bluez stack.
-
-The last stable release of this SimpleDBus with both components together is [v1.2.0](https://github.com/OpenBluetoothToolbox/SimpleDBus/releases/tag/v1.2.0).
-
-Migration is currently in progress and might take some time until ready. Stay tuned!
-
 ## Overview
-SimpleDBus is a C++ low-level binding around DBus designed to be easy to integrate and use with commercial projects. On top of it, there is a partial implementation of BlueZ bindings to enable the control of Bluetooth peripherals.
-
-I've also coded a (partial) implementation of the Bluez DBus bindings in order to control the Bluetooth peripherals.
+SimpleBluez is a C++ implementation of the Bluez API on top of [SimpleDBus](https://github.com/OpenBluetoothToolbox/SimpleDBus). It's designed to provide complete access to the underlying Bluez stack, requiring the user to properly handle any associated behaviors and side-effects.
 
 If you want to use the library and need help. **Please reach out!**
 You can find me at: `kevin at dewald dot me`
 
 ## Build
-SimpleDBus should work on any Linux environment using DBus. To install the necessary dependencies on Debian-based systems, use the following command: `sudo apt install libdbus-1-dev`
-
-You can find scripts for all these
+SimpleBluez should work on any Linux environment. Make sure you have necesary dependencies from SimpleDBus installed.
 
 ### Standalone build from source
 
@@ -33,11 +21,11 @@ sudo make install # Not available yet.
 ```
 
 ### Build as part of another project
-If you want to add SimpleDBus to your project without any external dependencies, just clone the repository and link to it on your `CMakeLists.txt` file.
+If you want to add SimpleBluez to your project without any external dependencies, just clone the repository and link to it on your `CMakeLists.txt` file.
 
 ```
-add_subdirectory(<path-to-simpledbus> ${CMAKE_BINARY_DIR}/simpledbus)
-include_directories(${SIMPLEDBUS_INCLUDES})
+add_subdirectory(<path-to-simplebluez> ${CMAKE_BINARY_DIR}/simplebluez)
+include_directories(${SIMPLEBLUEZ_INCLUDES})
 ```
 
 ### Build examples
@@ -47,6 +35,21 @@ mkdir build && cd build
 cmake ../examples
 make -j
 ```
+
+## Security
+
+One key security feature of the library is it allows the user to specify
+the URLs and tags of all internal dependencies, thus allowing compilation
+from internal or secure sources without the risk of those getting compromised.
+This is done by specifying the additional command line arguments to
+the `cmake` command:
+
+- `SIMPLEDBUS_GIT_REPOSITORY`
+  Call CMake with `-DSIMPLEDBUS_GIT_REPOSITORY=<path>` to override the
+  default location of the SimpleDBus repository.
+- `SIMPLEDBUS_GIT_TAG`
+  Call CMake with `-DSIMPLEDBUS_GIT_TAG=<tag>` to override the default
+  tag of the SimpleDBus repository.
 
 ## More information
 - You can find the official documentation for BlueZ in [this link](https://git.kernel.org/pub/scm/bluetooth/bluez.git/plain/doc/gatt-api.txt).
