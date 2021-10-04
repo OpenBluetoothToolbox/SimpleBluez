@@ -96,6 +96,12 @@ bool GattCharacteristic1::Property_Notifying() {
     return _notifying;
 }
 
+std::vector<uint8_t> GattCharacteristic1::Property_Value() {
+    auto value = Get(_interface_name, "Value");
+    add_option("Value", value);
+    return _value;
+}
+
 void GattCharacteristic1::Action_StartNotify() {
     LOG_F(DEBUG, "%s -> StartNotify", _path.c_str());
     auto msg = SimpleDBus::Message::create_method_call("org.bluez", _path, _interface_name, "StartNotify");

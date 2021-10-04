@@ -41,9 +41,10 @@ int main(int argc, char* argv[]) {
 
     adapter->OnDeviceUpdated = [](std::shared_ptr<BluezDevice> device) {
         std::cout << "Update received for " << device->get_address() << std::endl;
+        std::cout << "\tName " << device->get_name() << std::endl;
         auto manufacturer_data = device->get_manufacturer_data();
         for (auto& [manufacturer_id, value_array] : manufacturer_data) {
-            std::cout << "\t Manuf ID " << std::dec << (int)manufacturer_id << std::endl;
+            std::cout << "\tManuf ID " << std::dec << (int)manufacturer_id << std::endl;
             std::cout << "\t\t";
             for (int i = 0; i < value_array.size(); i++) {
                 std::cout << std::setfill('0') << std::setw(2) << std::hex << ((int)value_array[i]) << " ";

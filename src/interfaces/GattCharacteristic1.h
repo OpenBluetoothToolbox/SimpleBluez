@@ -41,4 +41,5 @@ class GattCharacteristic1 : public SimpleDBus::Interfaces::PropertyHandler, publ
     void Action_StopNotify();
 
     bool Property_Notifying();
+    std::vector<uint8_t> Property_Value();
 };
