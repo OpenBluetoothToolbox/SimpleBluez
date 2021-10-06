@@ -38,16 +38,16 @@ include_directories(${SIMPLEDBUS_INCLUDES})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 message("-- [INFO] Building SimpleBluez")
-file(GLOB_RECURSE SRC_BLUEZDBUS_FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
+file(GLOB_RECURSE SRC_simplebluez_FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 
-add_library(bluezdbus-static STATIC ${SRC_BLUEZDBUS_FILES})
-add_library(bluezdbus SHARED ${SRC_BLUEZDBUS_FILES})
+add_library(simplebluez-static STATIC ${SRC_simplebluez_FILES})
+add_library(simplebluez SHARED ${SRC_simplebluez_FILES})
 
-target_compile_options(bluezdbus-static PRIVATE -std=c++17 -fPIC -Wfatal-errors -Wpedantic -O3)
-target_compile_options(bluezdbus PRIVATE -std=c++17 -fPIC -Wfatal-errors -Wpedantic -O3)
+target_compile_options(simplebluez-static PRIVATE -std=c++17 -fPIC -Wfatal-errors -Wpedantic -O3)
+target_compile_options(simplebluez PRIVATE -std=c++17 -fPIC -Wfatal-errors -Wpedantic -O3)
 
-target_link_libraries(bluezdbus-static PUBLIC simpledbus-static)
-target_link_libraries(bluezdbus PUBLIC simpledbus-static)
+target_link_libraries(simplebluez-static PUBLIC simpledbus-static)
+target_link_libraries(simplebluez PUBLIC simpledbus-static)
 
 # Export the variables needed by the parent project
 if(NOT ${STANDALONE})

@@ -4,4 +4,4 @@ project(EXAMPLE_MANUF_DATA)
 
 message("-- [INFO] Building Example")
 add_executable(example_manuf_data main.cpp)
-target_link_libraries(example_manuf_data bluezdbus-static pthread)
+target_link_libraries(example_manuf_data simplebluez-static pthread)
