@@ -26,13 +26,18 @@ if(NOT SIMPLEDBUS_GIT_TAG)
     set(SIMPLEDBUS_GIT_TAG "master")
 endif()
 
-# Library includes
-FetchContent_Declare(
-    simpledbus
-    GIT_REPOSITORY ${SIMPLEDBUS_GIT_REPOSITORY}
-    GIT_TAG ${SIMPLEDBUS_GIT_TAG}
-)
-FetchContent_MakeAvailable(simpledbus)
+if(NOT SIMPLEDBUS_LOCAL_PATH)
+    # Library includes
+    FetchContent_Declare(
+        simpledbus
+        GIT_REPOSITORY ${SIMPLEDBUS_GIT_REPOSITORY}
+        GIT_TAG ${SIMPLEDBUS_GIT_TAG}
+    )
+    FetchContent_MakeAvailable(simpledbus)
+else()
+    message("-- [INFO] Using local SimpleDBus")
+    add_subdirectory(${SIMPLEDBUS_LOCAL_PATH} ${CMAKE_CURRENT_BINARY_DIR}/simpledbus)
+endif()
 
 include_directories(${SIMPLEDBUS_INCLUDES})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
