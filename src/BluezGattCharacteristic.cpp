@@ -13,7 +13,7 @@ BluezGattCharacteristic::BluezGattCharacteristic(SimpleDBus::Connection* conn, s
         }
     };
 
-    auto managed_interface = managed_interfaces.get_dict_object_path();
+    auto managed_interface = managed_interfaces.get_dict_string();
     for (auto& [iface, options] : managed_interface) {
         add_interface(iface, options);
     }
