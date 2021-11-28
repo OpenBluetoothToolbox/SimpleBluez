@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-BluezDevice::BluezDevice(SimpleDBus::Connection* conn, std::string path, SimpleDBus::Holder managed_interfaces)
+BluezDevice::BluezDevice(std::shared_ptr<SimpleDBus::Connection> conn, std::string path, SimpleDBus::Holder managed_interfaces)
     : _conn(conn), _path(path), Device1{conn, path} {
     PropertyHandler::PropertiesChanged = [&](std::string interface, SimpleDBus::Holder changed_properties,
                                         SimpleDBus::Holder invalidated_properties) {

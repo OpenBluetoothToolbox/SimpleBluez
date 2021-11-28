@@ -2,7 +2,7 @@
 
 #include "simpledbus/base/Logger.h"
 
-BluezGattCharacteristic::BluezGattCharacteristic(SimpleDBus::Connection* conn, std::string path,
+BluezGattCharacteristic::BluezGattCharacteristic(std::shared_ptr<SimpleDBus::Connection> conn, std::string path,
                                                  SimpleDBus::Holder managed_interfaces)
     : _conn(conn), _path(path), GattCharacteristic1{conn, path} {
     PropertyHandler::PropertiesChanged = [&](std::string interface, SimpleDBus::Holder changed_properties,

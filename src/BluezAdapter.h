@@ -11,14 +11,14 @@
 
 class BluezAdapter : public Adapter1, public SimpleDBus::Introspectable {
   private:
-    SimpleDBus::Connection* _conn;
+    std::shared_ptr<SimpleDBus::Connection> _conn;
     std::string _path;
 
     std::map<std::string, std::shared_ptr<BluezDevice>> _devices;
     void add_interface(std::string interface_name, SimpleDBus::Holder options);
 
   public:
-    BluezAdapter(SimpleDBus::Connection* conn, std::string path, SimpleDBus::Holder managed_interfaces);
+    BluezAdapter(std::shared_ptr<SimpleDBus::Connection> conn, std::string path, SimpleDBus::Holder managed_interfaces);
     ~BluezAdapter();
 
     std::string get_identifier();

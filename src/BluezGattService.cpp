@@ -2,7 +2,7 @@
 
 #include "simpledbus/base/Logger.h"
 
-BluezGattService::BluezGattService(SimpleDBus::Connection* conn, std::string path,
+BluezGattService::BluezGattService(std::shared_ptr<SimpleDBus::Connection> conn, std::string path,
                                    SimpleDBus::Holder managed_interfaces)
     : _conn(conn), _path(path), GattService1{conn, path} {
     PropertyHandler::PropertiesChanged = [&](std::string interface, SimpleDBus::Holder changed_properties,

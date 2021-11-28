@@ -3,25 +3,27 @@
 #include <algorithm>
 
 BluezService::BluezService()
-    : conn(DBUS_BUS_SYSTEM), object_manager(&conn, "org.bluez", "/"), Introspectable{&conn, "org.bluez", "/"} {
+    : _conn(std::make_shared<SimpleDBus::Connection>(DBUS_BUS_SYSTEM)),
+      object_manager(_conn, "org.bluez", "/"),
+      Introspectable{_conn, "org.bluez", "/"} {
     object_manager.InterfacesAdded = [&](std::string path, SimpleDBus::Holder options) { add_path(path, options); };
     object_manager.InterfacesRemoved = [&](std::string path, SimpleDBus::Holder options) {
         remove_path(path, options);
     };
 }
 
-BluezService::~BluezService() { conn.remove_match("type='signal',sender='org.bluez'"); }
+BluezService::~BluezService() { _conn->remove_match("type='signal',sender='org.bluez'"); }
 
 void BluezService::init() {
-    conn.init();
+    _conn->init();
     object_manager.GetManagedObjects(true);  // Feed the objects via callback.
 
-    conn.add_match("type='signal',sender='org.bluez'");
+    _conn->add_match("type='signal',sender='org.bluez'");
 }
 
 void BluezService::run_async() {
-    conn.read_write();
-    SimpleDBus::Message message = conn.pop_message();
+    _conn->read_write();
+    SimpleDBus::Message message = _conn->pop_message();
     while (message.is_valid()) {
         switch (message.get_type()) {
             case SimpleDBus::MessageType::SIGNAL:
@@ -30,7 +32,7 @@ void BluezService::run_async() {
             default:
                 break;
         }
-        message = conn.pop_message();
+        message = _conn->pop_message();
     }
 }
 
@@ -54,7 +56,7 @@ void BluezService::add_path(std::string path, SimpleDBus::Holder options) {
             agent.reset(new BluezAgent(path, options));
             break;
         case 3:
-            adapters.emplace(std::make_pair(path, new BluezAdapter(&conn, path, options)));
+            adapters.emplace(std::make_pair(path, new BluezAdapter(_conn, path, options)));
             break;
         default:
             // Propagate the paths downwards until someone claims it.

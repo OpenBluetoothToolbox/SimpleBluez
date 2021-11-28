@@ -8,7 +8,7 @@ class Adapter1 : public SimpleDBus::Interfaces::PropertyHandler, public SimpleDB
   private:
     static const std::string _interface_name;
 
-    SimpleDBus::Connection* _conn;
+    std::shared_ptr<SimpleDBus::Connection> _conn;
     std::string _path;
 
     bool _discovering;
@@ -18,7 +18,7 @@ class Adapter1 : public SimpleDBus::Interfaces::PropertyHandler, public SimpleDB
     void remove_option(std::string option_name);
 
   public:
-    Adapter1(SimpleDBus::Connection* conn, std::string path);
+    Adapter1(std::shared_ptr<SimpleDBus::Connection> conn, std::string path);
     ~Adapter1();
 
     // DBus Methods

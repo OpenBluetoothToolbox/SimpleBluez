@@ -8,13 +8,13 @@
 
 class BluezGattCharacteristic : public GattCharacteristic1 {
   private:
-    SimpleDBus::Connection* _conn;
+    std::shared_ptr<SimpleDBus::Connection> _conn;
     std::string _path;
 
     void add_interface(std::string interface_name, SimpleDBus::Holder options);
 
   public:
-    BluezGattCharacteristic(SimpleDBus::Connection* conn, std::string path, SimpleDBus::Holder options);
+    BluezGattCharacteristic(std::shared_ptr<SimpleDBus::Connection> conn, std::string path, SimpleDBus::Holder options);
     ~BluezGattCharacteristic();
 
     bool add_path(std::string path, SimpleDBus::Holder options);

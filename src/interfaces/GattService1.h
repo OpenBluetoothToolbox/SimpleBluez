@@ -6,7 +6,7 @@
 
 class GattService1 : public SimpleDBus::Interfaces::PropertyHandler, public SimpleDBus::Properties {
   private:
-    SimpleDBus::Connection* _conn;
+    std::shared_ptr<SimpleDBus::Connection> _conn;
     std::string _path;
 
     std::string _uuid;
@@ -15,7 +15,7 @@ class GattService1 : public SimpleDBus::Interfaces::PropertyHandler, public Simp
     void remove_option(std::string option_name);
 
   public:
-    GattService1(SimpleDBus::Connection* conn, std::string path);
+    GattService1(std::shared_ptr<SimpleDBus::Connection> conn, std::string path);
     ~GattService1();
 
     std::string get_uuid();

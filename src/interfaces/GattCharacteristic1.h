@@ -9,7 +9,7 @@ class GattCharacteristic1 : public SimpleDBus::Interfaces::PropertyHandler, publ
   private:
     static const std::string _interface_name;
 
-    SimpleDBus::Connection* _conn;
+    std::shared_ptr<SimpleDBus::Connection> _conn;
     std::string _path;
 
     std::string _uuid;
@@ -20,7 +20,7 @@ class GattCharacteristic1 : public SimpleDBus::Interfaces::PropertyHandler, publ
     void remove_option(std::string option_name);
 
   public:
-    GattCharacteristic1(SimpleDBus::Connection* conn, std::string path);
+    GattCharacteristic1(std::shared_ptr<SimpleDBus::Connection> conn, std::string path);
     ~GattCharacteristic1();
 
     void StartNotify();

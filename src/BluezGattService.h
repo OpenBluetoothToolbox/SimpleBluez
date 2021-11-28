@@ -12,14 +12,14 @@
 
 class BluezGattService : public GattService1 {
   private:
-    SimpleDBus::Connection* _conn;
+    std::shared_ptr<SimpleDBus::Connection> _conn;
     std::string _path;
 
     std::map<std::string, std::shared_ptr<BluezGattCharacteristic>> gatt_characteristics;
     void add_interface(std::string interface_name, SimpleDBus::Holder options);
 
   public:
-    BluezGattService(SimpleDBus::Connection* conn, std::string path, SimpleDBus::Holder options);
+    BluezGattService(std::shared_ptr<SimpleDBus::Connection> conn, std::string path, SimpleDBus::Holder options);
     ~BluezGattService();
 
     bool add_path(std::string path, SimpleDBus::Holder options);

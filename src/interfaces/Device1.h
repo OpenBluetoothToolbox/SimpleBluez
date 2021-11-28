@@ -10,7 +10,7 @@ class Device1 : public SimpleDBus::Interfaces::PropertyHandler, public SimpleDBu
   private:
     static const std::string _interface_name;
 
-    SimpleDBus::Connection* _conn;
+    std::shared_ptr<SimpleDBus::Connection> _conn;
     std::string _path;
 
     int16_t _rssi;
@@ -24,7 +24,7 @@ class Device1 : public SimpleDBus::Interfaces::PropertyHandler, public SimpleDBu
     void remove_option(std::string option_name);
 
   public:
-    Device1(SimpleDBus::Connection* conn, std::string path);
+    Device1(std::shared_ptr<SimpleDBus::Connection> conn, std::string path);
     ~Device1();
 
     void Connect();

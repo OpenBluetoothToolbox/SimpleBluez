@@ -6,7 +6,7 @@
 
 const std::string Device1::_interface_name = "org.bluez.Device1";
 
-Device1::Device1(SimpleDBus::Connection* conn, std::string path)
+Device1::Device1(std::shared_ptr<SimpleDBus::Connection> conn, std::string path)
     : _conn(conn),
       _path(path),
       _address(""),
