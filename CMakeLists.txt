@@ -40,7 +40,9 @@ else()
 endif()
 
 include_directories(${SIMPLEDBUS_INCLUDES})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/legacy)
 
 message("-- [INFO] Building SimpleBluez")
 file(GLOB_RECURSE SRC_simplebluez_FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
@@ -56,5 +58,5 @@ target_link_libraries(simplebluez PUBLIC simpledbus-static)
 
 # Export the variables needed by the parent project
 if(NOT ${STANDALONE})
-    set(SIMPLEBLUEZ_INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/src ${SIMPLEDBUS_INCLUDES} PARENT_SCOPE)
+    set(SIMPLEBLUEZ_INCLUDES ${CMAKE_CURRENT_SOURCE_DIR}/src ${CMAKE_CURRENT_SOURCE_DIR}/src/legacy ${SIMPLEDBUS_INCLUDES} PARENT_SCOPE)
 endif()

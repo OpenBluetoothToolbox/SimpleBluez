@@ -2,7 +2,7 @@
 
 #include "simpledbus/SimpleDBus.h"
 
-#include "interfaces/GattCharacteristic1.h"
+#include "GattCharacteristic1.h"
 
 #include <string>
 

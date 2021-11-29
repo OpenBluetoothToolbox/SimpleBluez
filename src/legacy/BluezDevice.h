@@ -2,7 +2,7 @@
 
 #include "simpledbus/SimpleDBus.h"
 
-#include "interfaces/Device1.h"
+#include "Device1.h"
 
 #include "BluezGattService.h"
 

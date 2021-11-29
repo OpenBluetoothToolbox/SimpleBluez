@@ -6,7 +6,7 @@
 #include <map>
 #include <vector>
 
-class Device1 : public SimpleDBus::Interfaces::PropertyHandler, public SimpleDBus::Properties {
+class Device1 : public SimpleDBus::Interfaces::PropertyHandler, public SimpleDBus::Interfaces::Properties {
   private:
     static const std::string _interface_name;
 

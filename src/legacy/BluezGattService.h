@@ -2,7 +2,7 @@
 
 #include "simpledbus/SimpleDBus.h"
 
-#include "interfaces/GattService1.h"
+#include "GattService1.h"
 
 #include "BluezGattCharacteristic.h"
 
