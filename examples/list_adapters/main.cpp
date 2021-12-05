@@ -27,9 +27,9 @@ int main(int argc, char* argv[]) {
     std::thread* async_thread = new std::thread(async_thread_function);
 
     auto internal_adapters = bluez.get_adapters();
-    // for (auto& adapter : internal_adapters) {
-    //     std::cout << "Adapter: " << adapter->get_identifier() << " [" << adapter->Address() << "]" << std::endl;
-    // }
+    for (auto& adapter : internal_adapters) {
+        std::cout << "Adapter: " << adapter->identifier() << " [" << adapter->address() << "]" << std::endl;
+    }
 
     async_thread_active = false;
     while (!async_thread->joinable()) {

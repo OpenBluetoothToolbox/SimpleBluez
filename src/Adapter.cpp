@@ -20,7 +20,7 @@ std::shared_ptr<SimpleDBus::Proxy> Adapter::path_create(const std::string& path)
 }
 
 std::shared_ptr<SimpleDBus::Interface> Adapter::interfaces_create(const std::string& interface_name,
-                                                                       SimpleDBus::Holder options) {
+                                                                  SimpleDBus::Holder options) {
     std::cout << "Creating interface " << interface_name << " for " << _path << std::endl;
 
     if (interface_name == "org.bluez.Adapter1") {
@@ -30,3 +30,21 @@ std::shared_ptr<SimpleDBus::Interface> Adapter::interfaces_create(const std::str
     auto interface = std::make_shared<SimpleDBus::Interface>(_conn, _bus_name, _path, interface_name);
     return std::static_pointer_cast<SimpleDBus::Interface>(interface);
 }
+
+std::shared_ptr<Adapter1> Adapter::adapter1() {
+    if (_interfaces.find("org.bluez.Adapter1") == _interfaces.end()) {
+        // TODO: throw exception
+        return nullptr;
+    }
+
+    return std::dynamic_pointer_cast<Adapter1>(_interfaces.at("org.bluez.Adapter1"));
+}
+
+std::string Adapter::identifier() const {
+    std::size_t start = _path.find_last_of("/");
+    return _path.substr(start + 1);
+}
+
+std::string Adapter::address() { return adapter1()->Address(); }
+
+bool Adapter::discovering() { return adapter1()->Discovering(); }
