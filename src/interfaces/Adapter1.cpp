@@ -25,7 +25,27 @@ SimpleDBus::Holder Adapter1::GetDiscoveryFilters() {
     return discovery_filters;
 }
 
-void Adapter1::SetDiscoveryFilter(SimpleDBus::Holder properties) {
+void Adapter1::SetDiscoveryFilter(DiscoveryFilter filter) {
+    SimpleDBus::Holder properties = SimpleDBus::Holder::create_dict();
+
+    switch (filter) {
+        case DiscoveryFilter::AUTO: {
+            properties.dict_append(SimpleDBus::Holder::Type::STRING, "Transport",
+                                   SimpleDBus::Holder::create_string("auto"));
+            break;
+        }
+        case DiscoveryFilter::BREDR: {
+            properties.dict_append(SimpleDBus::Holder::Type::STRING, "Transport",
+                                   SimpleDBus::Holder::create_string("bredr"));
+            break;
+        }
+        case DiscoveryFilter::LE: {
+            properties.dict_append(SimpleDBus::Holder::Type::STRING, "Transport",
+                                   SimpleDBus::Holder::create_string("le"));
+            break;
+        }
+    }
+
     auto msg = create_method_call("SetDiscoveryFilter");
     msg.append_argument(properties, "a{sv}");
     _conn->send_with_reply_and_block(msg);

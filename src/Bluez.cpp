@@ -2,18 +2,16 @@
 #include <simplebluez/ProxyOrg.h>
 #include <simpledbus/interfaces/ObjectManager.h>
 
-#include <iostream>
-
 using namespace SimpleBluez;
 
 Bluez::Bluez() : Proxy(std::make_shared<SimpleDBus::Connection>(DBUS_BUS_SYSTEM), "org.bluez", "/") {
     _interfaces["org.freedesktop.DBus.ObjectManager"] = std::static_pointer_cast<SimpleDBus::Interface>(
         std::make_shared<SimpleDBus::ObjectManager>(_conn, "org.bluez", "/"));
 
-    // object_manager.InterfacesAdded = [&](std::string path, SimpleDBus::Holder options) { add_path(path, options); };
-    // object_manager.InterfacesRemoved = [&](std::string path, SimpleDBus::Holder options) {
-    //     remove_path(path, options);
-    // };
+    object_manager()->InterfacesAdded = [&](std::string path, SimpleDBus::Holder options) { path_add(path, options); };
+    object_manager()->InterfacesRemoved = [&](std::string path, SimpleDBus::Holder options) {
+        path_remove(path, options);
+    };
 }
 
 Bluez::~Bluez() { _conn->remove_match("type='signal',sender='org.bluez'"); }
@@ -53,17 +51,6 @@ std::shared_ptr<SimpleDBus::Proxy> Bluez::path_create(const std::string& path) {
     return std::static_pointer_cast<SimpleDBus::Proxy>(child);
 }
 
-std::shared_ptr<SimpleDBus::Interface> Bluez::interfaces_create(const std::string& interface_name,
-                                                                     SimpleDBus::Holder options) {
-    std::cout << "Creating interface " << interface_name << "for " << _path << std::endl;
-    auto interface = std::make_shared<SimpleDBus::Interface>(_conn, _bus_name, _path, interface_name);
-    return std::static_pointer_cast<SimpleDBus::Interface>(interface);
-}
-
 std::shared_ptr<SimpleDBus::ObjectManager> Bluez::object_manager() {
-    if (_interfaces.find("org.freedesktop.DBus.ObjectManager") == _interfaces.end()) {
-        return nullptr;
-    }
-
     return std::dynamic_pointer_cast<SimpleDBus::ObjectManager>(_interfaces["org.freedesktop.DBus.ObjectManager"]);
 }

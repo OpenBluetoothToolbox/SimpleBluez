@@ -1,6 +1,8 @@
 #include <simplebluez/Device.h>
 #include <simplebluez/Service.h>
 
+#include <simplebluez/interfaces/Device1.h>
+
 #include <iostream>
 
 using namespace SimpleBluez;
@@ -18,8 +20,10 @@ std::shared_ptr<SimpleDBus::Proxy> Device::path_create(const std::string& path) 
 }
 
 std::shared_ptr<SimpleDBus::Interface> Device::interfaces_create(const std::string& interface_name,
-                                                                      SimpleDBus::Holder options) {
-    std::cout << "Creating interface " << interface_name << " for " << _path << std::endl;
+                                                                 SimpleDBus::Holder options) {
+    if (interface_name == "org.bluez.Device1") {
+        return std::static_pointer_cast<SimpleDBus::Interface>(std::make_shared<Device1>(_conn, _path));
+    }
 
     auto interface = std::make_shared<SimpleDBus::Interface>(_conn, _bus_name, _path, interface_name);
     return std::static_pointer_cast<SimpleDBus::Interface>(interface);

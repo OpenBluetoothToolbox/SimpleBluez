@@ -21,8 +21,6 @@ std::shared_ptr<SimpleDBus::Proxy> Adapter::path_create(const std::string& path)
 
 std::shared_ptr<SimpleDBus::Interface> Adapter::interfaces_create(const std::string& interface_name,
                                                                   SimpleDBus::Holder options) {
-    std::cout << "Creating interface " << interface_name << " for " << _path << std::endl;
-
     if (interface_name == "org.bluez.Adapter1") {
         return std::static_pointer_cast<SimpleDBus::Interface>(std::make_shared<Adapter1>(_conn, _path));
     }
@@ -48,3 +46,9 @@ std::string Adapter::identifier() const {
 std::string Adapter::address() { return adapter1()->Address(); }
 
 bool Adapter::discovering() { return adapter1()->Discovering(); }
+
+void Adapter::discovery_filter(const DiscoveryFilter& filter) { adapter1()->SetDiscoveryFilter(filter); }
+
+void Adapter::discovery_start() { adapter1()->StartDiscovery(); }
+
+void Adapter::discovery_stop() { adapter1()->StopDiscovery(); }
