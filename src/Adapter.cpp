@@ -13,8 +13,6 @@ Adapter::Adapter(std::shared_ptr<SimpleDBus::Connection> conn, const std::string
 Adapter::~Adapter() {}
 
 std::shared_ptr<SimpleDBus::Proxy> Adapter::path_create(const std::string& path) {
-    std::cout << "Creating proxy for " << path << std::endl;
-
     auto child = std::make_shared<Device>(_conn, _bus_name, path);
     return std::static_pointer_cast<SimpleDBus::Proxy>(child);
 }
@@ -52,3 +50,21 @@ void Adapter::discovery_filter(const DiscoveryFilter& filter) { adapter1()->SetD
 void Adapter::discovery_start() { adapter1()->StartDiscovery(); }
 
 void Adapter::discovery_stop() { adapter1()->StopDiscovery(); }
+
+std::shared_ptr<Device> Adapter::device_get(const std::string& path) {
+    if (_children.find(path) == _children.end()) {
+        // TODO: throw exception
+        return nullptr;
+    }
+
+    return std::dynamic_pointer_cast<Device>(_children.at(path));
+}
+
+void Adapter::set_on_device_updated(std::function<void(std::shared_ptr<Device> device)> callback) {
+    on_child_signal_received.load([this, callback](std::string child_path) {
+        auto device = device_get(child_path);
+        if (device) {
+            callback(device);
+        }
+    });
+}

@@ -14,10 +14,24 @@ class Device1 : public SimpleDBus::Interface {
     // ----- METHODS -----
 
     // ----- PROPERTIES -----
+    int16_t RSSI();
+    std::string Address();
+    std::string Alias();
+    std::string Name();
+    std::map<uint16_t, std::vector<uint8_t>> ManufacturerData();
+    bool Connected();
+    bool ServicesResolved();
 
   protected:
-    void property_changed(std::string option_name, SimpleDBus::Holder value) override;
-    void property_removed(std::string option_name) override;
+    void property_changed(std::string option_name) override;
+
+    int16_t _rssi;
+    std::string _name;
+    std::string _alias;
+    std::string _address;
+    bool _connected;
+    bool _services_resolved;
+    std::map<uint16_t, std::vector<uint8_t>> _manufacturer_data;
 };
 
 }  // namespace SimpleBluez

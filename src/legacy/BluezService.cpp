@@ -26,7 +26,7 @@ void BluezService::run_async() {
     SimpleDBus::Message message = _conn->pop_message();
     while (message.is_valid()) {
         switch (message.get_type()) {
-            case SimpleDBus::MessageType::SIGNAL:
+            case SimpleDBus::Message::Type::SIGNAL:
                 process_received_signal(message);
                 break;
             default:

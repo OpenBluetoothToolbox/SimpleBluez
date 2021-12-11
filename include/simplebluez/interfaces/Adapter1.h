@@ -28,8 +28,7 @@ class Adapter1 : public SimpleDBus::Interface {
     bool _discovering;
     std::string _address;
 
-    void property_changed(std::string option_name, SimpleDBus::Holder value) override;
-    void property_removed(std::string option_name) override;
+    void property_changed(std::string option_name) override;
 };
 
 }  // namespace SimpleBluez

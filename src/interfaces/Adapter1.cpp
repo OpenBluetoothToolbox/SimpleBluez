@@ -53,28 +53,14 @@ void Adapter1::SetDiscoveryFilter(DiscoveryFilter filter) {
 
 bool Adapter1::Discovering() {
     std::lock_guard<std::recursive_mutex> lock(_property_update_mutex);
-    if (_loaded) {
-        auto value = property_get("Discovering");
-        property_changed("Discovering", value);
-    }
-    return _discovering;
+    property_refresh("Discovering");
+    return _properties["Discovering"].get_boolean();
 }
 
 std::string Adapter1::Address() {
     std::lock_guard<std::recursive_mutex> lock(_property_update_mutex);
-    if (_loaded) {
-        auto value = property_get("Address");
-        property_changed("Address", value);
-    }
-    return _address;
+    property_refresh("Address");
+    return _properties["Address"].get_string();
 }
 
-void Adapter1::property_changed(std::string option_name, SimpleDBus::Holder value) {
-    if (option_name == "Discovering") {
-        _discovering = value.get_boolean();
-    } else if (option_name == "Address") {
-        _address = value.get_string();
-    }
-}
-
-void Adapter1::property_removed(std::string option_name) {}
+void Adapter1::property_changed(std::string option_name) {}
