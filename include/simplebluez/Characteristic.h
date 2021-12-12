@@ -10,8 +10,7 @@ class Characteristic : public SimpleDBus::Proxy {
     ~Characteristic();
 
   private:
-    std::shared_ptr<SimpleDBus::Interface> interfaces_create(const std::string& interface_name,
-                                                                  SimpleDBus::Holder options) override;
+    std::shared_ptr<SimpleDBus::Interface> interfaces_create(const std::string& interface_name) override;
 };
 
 }  // namespace SimpleBluez

@@ -17,8 +17,7 @@ std::shared_ptr<SimpleDBus::Proxy> Device::path_create(const std::string& path) 
     return std::static_pointer_cast<SimpleDBus::Proxy>(child);
 }
 
-std::shared_ptr<SimpleDBus::Interface> Device::interfaces_create(const std::string& interface_name,
-                                                                 SimpleDBus::Holder options) {
+std::shared_ptr<SimpleDBus::Interface> Device::interfaces_create(const std::string& interface_name) {
     if (interface_name == "org.bluez.Device1") {
         return std::static_pointer_cast<SimpleDBus::Interface>(std::make_shared<Device1>(_conn, _path));
     }

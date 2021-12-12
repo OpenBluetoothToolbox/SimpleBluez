@@ -10,8 +10,7 @@ Characteristic::Characteristic(std::shared_ptr<SimpleDBus::Connection> conn, con
 
 Characteristic::~Characteristic() {}
 
-std::shared_ptr<SimpleDBus::Interface> Characteristic::interfaces_create(const std::string& interface_name,
-                                                                              SimpleDBus::Holder options) {
+std::shared_ptr<SimpleDBus::Interface> Characteristic::interfaces_create(const std::string& interface_name) {
     std::cout << "Creating interface " << interface_name << " for " << _path << std::endl;
 
     auto interface = std::make_shared<SimpleDBus::Interface>(_conn, _bus_name, _path, interface_name);

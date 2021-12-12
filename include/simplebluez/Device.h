@@ -22,8 +22,7 @@ class Device : public SimpleDBus::Proxy {
 
   private:
     std::shared_ptr<SimpleDBus::Proxy> path_create(const std::string& path) override;
-    std::shared_ptr<SimpleDBus::Interface> interfaces_create(const std::string& interface_name,
-                                                             SimpleDBus::Holder options) override;
+    std::shared_ptr<SimpleDBus::Interface> interfaces_create(const std::string& interface_name) override;
 
     std::shared_ptr<Device1> device1();
 };
