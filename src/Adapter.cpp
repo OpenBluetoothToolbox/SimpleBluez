@@ -60,10 +60,13 @@ std::shared_ptr<Device> Adapter::device_get(const std::string& path) {
 }
 
 void Adapter::set_on_device_updated(std::function<void(std::shared_ptr<Device> device)> callback) {
-    on_child_signal_received.load([this, callback](std::string child_path) {
+    auto on_device_updated = [this, callback](std::string child_path) {
         auto device = device_get(child_path);
         if (device) {
             callback(device);
         }
-    });
+    };
+
+    on_child_created.load(on_device_updated);
+    on_child_signal_received.load(on_device_updated);
 }

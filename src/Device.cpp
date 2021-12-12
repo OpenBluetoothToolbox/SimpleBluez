@@ -11,8 +11,6 @@ Device::Device(std::shared_ptr<SimpleDBus::Connection> conn, const std::string& 
 Device::~Device() {}
 
 std::shared_ptr<SimpleDBus::Proxy> Device::path_create(const std::string& path) {
-    std::cout << "Creating proxy for " << path << std::endl;
-
     auto child = std::make_shared<Service>(_conn, _bus_name, path);
     return std::static_pointer_cast<SimpleDBus::Proxy>(child);
 }
@@ -35,12 +33,25 @@ std::shared_ptr<Device1> Device::device1() {
     return std::dynamic_pointer_cast<Device1>(_interfaces.at("org.bluez.Device1"));
 }
 
+std::vector<std::shared_ptr<Service>> Device::services() {
+    std::vector<std::shared_ptr<Service>> services;
+
+    for (auto& [path, child] : _children) {
+        auto service = std::dynamic_pointer_cast<Service>(child);
+        if (service) {
+            services.push_back(service);
+        }
+    }
+    return services;
+}
+
+void Device::connect() { device1()->Connect(); }
+
+void Device::disconnect() { device1()->Disconnect(); }
+
 std::string Device::address() { return device1()->Address(); }
 
-std::string Device::name() {
-    // Note: Use the alias here as not all devices are guaranteed to have a name.
-    return device1()->Alias();
-}
+std::string Device::name() { return device1()->Name(); }
 
 std::string Device::alias() { return device1()->Alias(); }
 

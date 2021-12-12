@@ -8,7 +8,7 @@
 
 SimpleBluez::Bluez bluez;
 
-volatile bool async_thread_active = true;
+std::atomic_bool async_thread_active = true;
 void async_thread_function() {
     while (async_thread_active) {
         bluez.run_async();

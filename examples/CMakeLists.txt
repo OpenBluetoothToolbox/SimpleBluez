@@ -16,5 +16,6 @@ include_directories(${SIMPLEBLUEZ_INCLUDES})
 
 add_subdirectory(list_adapters)
 add_subdirectory(scan)
+add_subdirectory(connect)
 
 add_subdirectory(ble_nus)

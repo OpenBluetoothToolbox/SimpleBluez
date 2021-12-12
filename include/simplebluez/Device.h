@@ -2,6 +2,7 @@
 
 #include <simpledbus/advanced/Proxy.h>
 
+#include <simplebluez/Service.h>
 #include <simplebluez/interfaces/Device1.h>
 
 namespace SimpleBluez {
@@ -11,6 +12,9 @@ class Device : public SimpleDBus::Proxy {
     Device(std::shared_ptr<SimpleDBus::Connection> conn, const std::string& bus_name, const std::string& path);
     ~Device();
 
+    // ----- PROPERTIES -----
+    std::vector<std::shared_ptr<Service>> services();
+
     std::string address();
     std::string name();
     std::string alias();
@@ -19,6 +23,10 @@ class Device : public SimpleDBus::Proxy {
 
     bool connected();
     bool services_resolved();
+
+    // ----- METHODS -----
+    void connect();
+    void disconnect();
 
   private:
     std::shared_ptr<SimpleDBus::Proxy> path_create(const std::string& path) override;

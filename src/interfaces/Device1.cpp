@@ -7,10 +7,26 @@ Device1::Device1(std::shared_ptr<SimpleDBus::Connection> conn, std::string path)
 
 Device1::~Device1() {}
 
+void Device1::Connect() {
+    auto msg = create_method_call("Connect");
+    _conn->send_with_reply_and_block(msg);
+}
+
+void Device1::Disconnect() {
+    auto msg = create_method_call("Disconnect");
+    _conn->send_with_reply_and_block(msg);
+}
+
 int16_t Device1::RSSI() {
     std::lock_guard<std::recursive_mutex> lock(_property_update_mutex);
     property_refresh("RSSI");
     return _properties["RSSI"].get_int16();
+}
+
+uint16_t Device1::Appearance() {
+    std::lock_guard<std::recursive_mutex> lock(_property_update_mutex);
+    property_refresh("Appearance");
+    return _properties["Appearance"].get_uint16();
 }
 
 std::string Device1::Address() {

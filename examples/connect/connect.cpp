@@ -23,6 +23,8 @@ void millisecond_delay(int ms) {
     }
 }
 
+std::vector<std::shared_ptr<SimpleBluez::Device>> peripherals;
+
 int main(int argc, char* argv[]) {
     int selection = -1;
 
@@ -30,7 +32,7 @@ int main(int argc, char* argv[]) {
     std::thread* async_thread = new std::thread(async_thread_function);
 
     auto adapters = bluez.get_adapters();
-    std::cout << "The following adapters were found:" << std::endl;
+    std::cout << "Available adapters:" << std::endl;
     for (int i = 0; i < adapters.size(); i++) {
         std::cout << "[" << i << "] " << adapters[i]->identifier() << " [" << adapters[i]->address() << "]"
                   << std::endl;
@@ -49,16 +51,9 @@ int main(int argc, char* argv[]) {
     adapter->discovery_filter(SimpleBluez::Adapter::DiscoveryFilter::LE);
 
     adapter->set_on_device_updated([](std::shared_ptr<SimpleBluez::Device> device) {
-        std::cout << "Update received for " << device->address() << std::endl;
-        std::cout << "\tName " << device->name() << std::endl;
-        auto manufacturer_data = device->manufacturer_data();
-        for (auto& [manufacturer_id, value_array] : manufacturer_data) {
-            std::cout << "\tManuf ID 0x" << std::setfill('0') << std::setw(4) << std::hex << (int)manufacturer_id;
-            std::cout << ": ";
-            for (int i = 0; i < value_array.size(); i++) {
-                std::cout << std::setfill('0') << std::setw(2) << std::hex << ((int)value_array[i]) << " ";
-            }
-            std::cout << std::endl;
+        if (std::find(peripherals.begin(), peripherals.end(), device) == peripherals.end()) {
+            std::cout << "Found device: " << device->name() << " [" << device->address() << "]" << std::endl;
+            peripherals.push_back(device);
         }
     });
 
@@ -66,8 +61,33 @@ int main(int argc, char* argv[]) {
     millisecond_delay(3000);
     adapter->discovery_stop();
 
-    // Sleep for a bit to allow the adapter to stop discovering.
-    millisecond_delay(3000);
+    std::cout << "The following devices were found:" << std::endl;
+    for (int i = 0; i < peripherals.size(); i++) {
+        std::cout << "[" << i << "] " << peripherals[i]->name() << " [" << peripherals[i]->address() << "]"
+                  << std::endl;
+    }
+
+    std::cout << "Please select a device to connect to: ";
+    std::cin >> selection;
+
+    if (selection >= 0 && selection < peripherals.size()) {
+        auto peripheral = peripherals[selection];
+        std::cout << "Connecting to " << peripheral->name() << " [" << peripheral->address() << "]" << std::endl;
+        peripheral->connect();
+
+        std::cout << "Successfully connected, listing services." << std::endl;
+        for (auto service : peripheral->services()) {
+            std::cout << "Service: " << service->uuid() << std::endl;
+            for (auto characteristic : service->characteristics()) {
+                std::cout << "  Characteristic: " << characteristic->uuid() << std::endl;
+            }
+        }
+        peripheral->disconnect();
+
+        // Sleep for an additional second before returning.
+        // If there are any unexpected events, this example will help debug them.
+        millisecond_delay(1000);
+    }
 
     async_thread_active = false;
     while (!async_thread->joinable()) {
