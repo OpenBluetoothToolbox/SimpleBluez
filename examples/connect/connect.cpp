@@ -1,4 +1,5 @@
 #include <simplebluez/Bluez.h>
+#include <simplebluez/Exceptions.h>
 
 #include <stdlib.h>
 #include <atomic>
@@ -73,7 +74,20 @@ int main(int argc, char* argv[]) {
     if (selection >= 0 && selection < peripherals.size()) {
         auto peripheral = peripherals[selection];
         std::cout << "Connecting to " << peripheral->name() << " [" << peripheral->address() << "]" << std::endl;
-        peripheral->connect();
+
+        for (int attempt = 0; attempt < 3; attempt++) {
+            try {
+                peripheral->connect();
+            } catch (SimpleDBus::Exception::SendFailed& e) {
+                millisecond_delay(100);
+            }
+        }
+
+        if (!peripheral->connected() && !peripheral->services_resolved()) {
+            std::cout << "Failed to connect to " << peripheral->name() << " [" << peripheral->address() << "]"
+                      << std::endl;
+            return 1;
+        }
 
         std::cout << "Successfully connected, listing services." << std::endl;
         for (auto service : peripheral->services()) {

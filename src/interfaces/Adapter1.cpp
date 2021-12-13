@@ -52,13 +52,11 @@ void Adapter1::SetDiscoveryFilter(DiscoveryFilter filter) {
 }
 
 bool Adapter1::Discovering() {
-    std::lock_guard<std::recursive_mutex> lock(_property_update_mutex);
     property_refresh("Discovering");
     return _properties["Discovering"].get_boolean();
 }
 
 std::string Adapter1::Address() {
-    std::lock_guard<std::recursive_mutex> lock(_property_update_mutex);
     property_refresh("Address");
     return _properties["Address"].get_string();
 }

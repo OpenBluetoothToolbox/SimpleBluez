@@ -15,8 +15,6 @@ std::string GattService1::UUID() {
 #include <iostream>
 
 void GattService1::property_changed(std::string option_name) {
-    std::cout << "GattService1::property_changed: " << option_name << std::endl;
-
     if (option_name == "UUID") {
         _uuid = _properties["UUID"].get_string();
     }

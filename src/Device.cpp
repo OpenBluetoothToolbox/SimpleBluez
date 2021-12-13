@@ -1,4 +1,5 @@
 #include <simplebluez/Device.h>
+#include <simplebluez/Exceptions.h>
 #include <simplebluez/Service.h>
 
 #include <iostream>
@@ -43,6 +44,23 @@ std::vector<std::shared_ptr<Service>> Device::services() {
         }
     }
     return services;
+}
+
+std::shared_ptr<Service> Device::get_service(const std::string& uuid) {
+    for (auto& [path, child] : _children) {
+        auto service = std::dynamic_pointer_cast<Service>(child);
+        if (service && service->uuid() == uuid) {
+            return service;
+        }
+    }
+
+    throw Exception::ServiceNotFoundException(uuid);
+}
+
+std::shared_ptr<Characteristic> Device::get_characteristic(const std::string& service_uuid,
+                                                           const std::string& characteristic_uuid) {
+    auto service = get_service(service_uuid);
+    return service->get_characteristic(characteristic_uuid);
 }
 
 void Device::connect() { device1()->Connect(); }

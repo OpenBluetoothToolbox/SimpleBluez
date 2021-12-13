@@ -39,6 +39,27 @@ else()
     add_subdirectory(${SIMPLEDBUS_LOCAL_PATH} ${CMAKE_CURRENT_BINARY_DIR}/simpledbus)
 endif()
 
+# Load default parameters passed in through the command line.
+if(NOT LIBFMT_GIT_REPOSITORY)
+    set(LIBFMT_GIT_REPOSITORY "https://github.com/fmtlib/fmt.git")
+endif()
+if(NOT LIBFMT_GIT_TAG)
+    set(LIBFMT_GIT_TAG "d141cdbeb0fb422a3fb7173b285fd38e0d1772dc") # v8.0.1
+endif()
+
+if(NOT LIBFMT_LOCAL_PATH)
+    # Library includes
+    FetchContent_Declare(
+        fmt
+        GIT_REPOSITORY ${LIBFMT_GIT_REPOSITORY}
+        GIT_TAG ${LIBFMT_GIT_TAG}
+    )
+    FetchContent_MakeAvailable(fmt)
+else()
+    message("-- [INFO] Using local LibFmt")
+    add_subdirectory(${LIBFMT_LOCAL_PATH} ${CMAKE_CURRENT_BINARY_DIR}/libfmt)
+endif()
+
 include_directories(${SIMPLEDBUS_INCLUDES})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
@@ -55,6 +76,9 @@ target_compile_options(simplebluez PRIVATE -std=c++17 -fPIC -Wfatal-errors -Wped
 
 target_link_libraries(simplebluez-static PUBLIC simpledbus-static)
 target_link_libraries(simplebluez PUBLIC simpledbus-static)
+
+target_link_libraries(simplebluez-static PRIVATE fmt::fmt-header-only)
+target_link_libraries(simplebluez PRIVATE fmt::fmt-header-only)
 
 # Export the variables needed by the parent project
 if(NOT ${STANDALONE})

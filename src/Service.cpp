@@ -1,4 +1,5 @@
 #include <simplebluez/Characteristic.h>
+#include <simplebluez/Exceptions.h>
 #include <simplebluez/Service.h>
 
 #include <iostream>
@@ -33,8 +34,6 @@ std::shared_ptr<GattService1> Service::gattservice1() {
     return std::dynamic_pointer_cast<GattService1>(_interfaces.at("org.bluez.GattService1"));
 }
 
-std::string Service::uuid() { return gattservice1()->UUID(); }
-
 std::vector<std::shared_ptr<Characteristic>> Service::characteristics() {
     std::vector<std::shared_ptr<Characteristic>> characteristics;
 
@@ -46,3 +45,16 @@ std::vector<std::shared_ptr<Characteristic>> Service::characteristics() {
     }
     return characteristics;
 }
+
+std::shared_ptr<Characteristic> Service::get_characteristic(const std::string& uuid) {
+    for (auto& [path, child] : _children) {
+        auto characteristic = std::dynamic_pointer_cast<Characteristic>(child);
+        if (characteristic && characteristic->uuid() == uuid) {
+            return characteristic;
+        }
+    }
+
+    throw Exception::CharacteristicNotFoundException(uuid);
+}
+
+std::string Service::uuid() { return gattservice1()->UUID(); }

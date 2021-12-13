@@ -12,9 +12,11 @@ class Service : public SimpleDBus::Proxy {
     Service(std::shared_ptr<SimpleDBus::Connection> conn, const std::string& bus_name, const std::string& path);
     ~Service();
 
+    std::shared_ptr<Characteristic> get_characteristic(const std::string& uuid);
+
     // ----- PROPERTIES -----
     std::vector<std::shared_ptr<Characteristic>> characteristics();
-    
+
     std::string uuid();
 
   private:
