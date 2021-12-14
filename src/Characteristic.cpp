@@ -29,3 +29,21 @@ std::shared_ptr<GattCharacteristic1> Characteristic::gattcharacteristic1() {
 }
 
 std::string Characteristic::uuid() { return gattcharacteristic1()->UUID(); }
+
+ByteArray Characteristic::read() { return gattcharacteristic1()->ReadValue(); }
+
+void Characteristic::write_request(ByteArray value) {
+    gattcharacteristic1()->WriteValue(value, GattCharacteristic1::WriteType::REQUEST);
+}
+
+void Characteristic::write_command(ByteArray value) {
+    gattcharacteristic1()->WriteValue(value, GattCharacteristic1::WriteType::COMMAND);
+}
+
+void Characteristic::start_notify() { gattcharacteristic1()->StartNotify(); }
+
+void Characteristic::stop_notify() { gattcharacteristic1()->StopNotify(); }
+
+void Characteristic::set_on_value_changed(std::function<void(ByteArray new_value)> callback) {
+    gattcharacteristic1()->OnValueChanged.load([this, callback]() { callback(gattcharacteristic1()->Value()); });
+}
