@@ -36,6 +36,10 @@ cmake ../examples
 make -j
 ```
 
+### Build tests
+To build and run unit and integration tests, the following packages are required:
+`sudo apt install libgtest-dev libgmock-dev python3-dev`
+
 ## Security
 
 One key security feature of the library is it allows the user to specify
@@ -50,6 +54,12 @@ the `cmake` command:
 - `SIMPLEDBUS_GIT_TAG`
   Call CMake with `-DSIMPLEDBUS_GIT_TAG=<tag>` to override the default
   tag of the SimpleDBus repository.
+- `LIBFMT_GIT_REPOSITORY`
+  Call CMake with `-DLIBFMT_GIT_REPOSITORY=<path>` to override the
+  default location of the LibFmt repository.
+- `LIBFMT_GIT_TAG`
+  Call CMake with `-DLIBFMT_GIT_TAG=<tag>` to override the default
+  tag of the LibFmt repository.
 
 Alternatively, instead of specifying the repository and tag, the user can
 specify the path to a local version of the dependencies. This is done by
@@ -58,6 +68,9 @@ specifying the additional command line arguments to the `cmake` command:
 - `SIMPLEDBUS_LOCAL_PATH`
   Call CMake with `-DSIMPLEDBUS_LOCAL_PATH=<path>` to override the
   default location of the SimpleDBus repository.
+- `LIBFMT_LOCAL_PATH`
+  Call CMake with `-DLIBFMT_LOCAL_PATH=<path>` to override the
+  default location of the LibFmt repository.
 
 ## More information
 - You can find the official documentation for BlueZ in [this link](https://git.kernel.org/pub/scm/bluetooth/bluez.git/plain/doc/gatt-api.txt).
