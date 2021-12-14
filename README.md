@@ -36,6 +36,10 @@ cmake ../examples
 make -j
 ```
 
+### Build tests
+To build and run unit and integration tests, the following packages are required:
+`sudo apt install libgtest-dev libgmock-dev python3-dev`
+
 ## Security
 
 One key security feature of the library is it allows the user to specify
