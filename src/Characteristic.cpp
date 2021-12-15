@@ -30,6 +30,8 @@ std::shared_ptr<GattCharacteristic1> Characteristic::gattcharacteristic1() {
 
 std::string Characteristic::uuid() { return gattcharacteristic1()->UUID(); }
 
+ByteArray Characteristic::value() { return gattcharacteristic1()->Value(); }
+
 ByteArray Characteristic::read() { return gattcharacteristic1()->ReadValue(); }
 
 void Characteristic::write_request(ByteArray value) {

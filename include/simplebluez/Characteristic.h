@@ -23,6 +23,7 @@ class Characteristic : public SimpleDBus::Proxy {
 
     // ----- PROPERTIES -----
     std::string uuid();
+    ByteArray value();
 
     // ----- CALLBACKS -----
     void set_on_value_changed(std::function<void(ByteArray new_value)> callback);
