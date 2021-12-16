@@ -32,6 +32,9 @@ class Device : public SimpleDBus::Proxy {
     void connect();
     void disconnect();
 
+    // ----- CALLBACKS -----
+    void set_on_disconnected(std::function<void()> callback);
+
   private:
     std::shared_ptr<SimpleDBus::Proxy> path_create(const std::string& path) override;
     std::shared_ptr<SimpleDBus::Interface> interfaces_create(const std::string& interface_name) override;
