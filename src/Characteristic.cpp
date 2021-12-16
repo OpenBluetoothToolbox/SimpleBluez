@@ -28,6 +28,8 @@ std::shared_ptr<GattCharacteristic1> Characteristic::gattcharacteristic1() {
     return std::dynamic_pointer_cast<GattCharacteristic1>(_interfaces.at("org.bluez.GattCharacteristic1"));
 }
 
+bool Characteristic::notifying() { return gattcharacteristic1()->Notifying(); }
+
 std::string Characteristic::uuid() { return gattcharacteristic1()->UUID(); }
 
 ByteArray Characteristic::value() { return gattcharacteristic1()->Value(); }
