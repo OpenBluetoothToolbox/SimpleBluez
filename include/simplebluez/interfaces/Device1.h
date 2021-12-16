@@ -1,5 +1,6 @@
 #pragma once
 
+#include <simpledbus/advanced/Callback.h>
 #include <simpledbus/advanced/Interface.h>
 
 #include <string>
@@ -24,6 +25,9 @@ class Device1 : public SimpleDBus::Interface {
     std::map<uint16_t, std::vector<uint8_t>> ManufacturerData();
     bool Connected();
     bool ServicesResolved();
+
+    // ----- CALLBACKS -----
+    SimpleDBus::Callback<std::function<void()>> OnDisconnected;
 
   protected:
     void property_changed(std::string option_name) override;

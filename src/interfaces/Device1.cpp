@@ -60,6 +60,11 @@ bool Device1::ServicesResolved() {
 }
 
 void Device1::property_changed(std::string option_name) {
+    if (option_name == "Connected") {
+        if (!_properties["Connected"].get_boolean()) {
+            OnDisconnected();
+        }
+    }
     if (option_name == "ManufacturerData") {
         _manufacturer_data.clear();
         std::map<uint16_t, SimpleDBus::Holder> manuf_data = _properties["ManufacturerData"].get_dict_uint16();
