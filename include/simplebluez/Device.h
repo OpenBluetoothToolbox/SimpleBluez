@@ -2,8 +2,8 @@
 
 #include <simpledbus/advanced/Proxy.h>
 
-#include <simplebluez/Service.h>
 #include <simplebluez/Characteristic.h>
+#include <simplebluez/Service.h>
 #include <simplebluez/interfaces/Device1.h>
 
 namespace SimpleBluez {
@@ -14,7 +14,8 @@ class Device : public SimpleDBus::Proxy {
     ~Device();
 
     std::shared_ptr<Service> get_service(const std::string& uuid);
-    std::shared_ptr<Characteristic> get_characteristic(const std::string& service_uuid, const std::string& characteristic_uuid);
+    std::shared_ptr<Characteristic> get_characteristic(const std::string& service_uuid,
+                                                       const std::string& characteristic_uuid);
 
     // ----- PROPERTIES -----
     std::vector<std::shared_ptr<Service>> services();
@@ -33,6 +34,7 @@ class Device : public SimpleDBus::Proxy {
     void disconnect();
 
     // ----- CALLBACKS -----
+    void set_on_services_resolved(std::function<void()> callback);
     void set_on_disconnected(std::function<void()> callback);
 
   private:

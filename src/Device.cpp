@@ -80,3 +80,5 @@ bool Device::connected() { return device1()->Connected(); }
 bool Device::services_resolved() { return device1()->ServicesResolved(); }
 
 void Device::set_on_disconnected(std::function<void()> callback) { device1()->OnDisconnected.load(callback); }
+
+void Device::set_on_services_resolved(std::function<void()> callback) { device1()->OnServicesResolved.load(callback); }
