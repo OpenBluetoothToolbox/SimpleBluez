@@ -27,6 +27,7 @@ class Device1 : public SimpleDBus::Interface {
     bool ServicesResolved();
 
     // ----- CALLBACKS -----
+    SimpleDBus::Callback<std::function<void()>> OnServicesResolved;
     SimpleDBus::Callback<std::function<void()>> OnDisconnected;
 
   protected:

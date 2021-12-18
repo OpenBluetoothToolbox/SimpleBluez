@@ -64,8 +64,11 @@ void Device1::property_changed(std::string option_name) {
         if (!_properties["Connected"].get_boolean()) {
             OnDisconnected();
         }
-    }
-    if (option_name == "ManufacturerData") {
+    } else if (option_name == "ServicesResolved") {
+        if (_properties["ServicesResolved"].get_boolean()) {
+            OnServicesResolved();
+        }
+    } else if (option_name == "ManufacturerData") {
         _manufacturer_data.clear();
         std::map<uint16_t, SimpleDBus::Holder> manuf_data = _properties["ManufacturerData"].get_dict_uint16();
         // Loop through all received keys and store them.
