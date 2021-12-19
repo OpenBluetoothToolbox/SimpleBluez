@@ -12,7 +12,7 @@ namespace SimpleBluez {
 class Characteristic : public SimpleDBus::Proxy {
   public:
     Characteristic(std::shared_ptr<SimpleDBus::Connection> conn, const std::string& bus_name, const std::string& path);
-    virtual ~Characteristic() = default
+    virtual ~Characteristic() = default;
 
     // ----- METHODS -----
     ByteArray read();

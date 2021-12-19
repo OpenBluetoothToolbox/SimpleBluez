@@ -21,7 +21,6 @@ std::shared_ptr<SimpleDBus::Proxy> ProxyOrg::path_create(const std::string& path
 }
 
 std::shared_ptr<SimpleDBus::Interface> ProxyOrg::interfaces_create(const std::string& interface_name) {
-    std::cout << "Creating interface " << interface_name << "for " << _path << std::endl;
     auto interface = std::make_shared<SimpleDBus::Interface>(_conn, _bus_name, _path, interface_name);
     return std::static_pointer_cast<SimpleDBus::Interface>(interface);
 }
