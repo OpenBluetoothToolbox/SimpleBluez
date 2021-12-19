@@ -14,7 +14,7 @@ class Adapter : public SimpleDBus::Proxy {
     typedef Adapter1::DiscoveryFilter DiscoveryFilter;
 
     Adapter(std::shared_ptr<SimpleDBus::Connection> conn, const std::string& bus_name, const std::string& path);
-    ~Adapter();
+    virtual ~Adapter() = default;
 
     std::string identifier() const;
     std::string address();

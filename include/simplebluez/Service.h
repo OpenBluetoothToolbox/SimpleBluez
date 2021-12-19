@@ -10,7 +10,7 @@ namespace SimpleBluez {
 class Service : public SimpleDBus::Proxy {
   public:
     Service(std::shared_ptr<SimpleDBus::Connection> conn, const std::string& bus_name, const std::string& path);
-    ~Service();
+    virtual ~Service() = default;
 
     std::shared_ptr<Characteristic> get_characteristic(const std::string& uuid);
 

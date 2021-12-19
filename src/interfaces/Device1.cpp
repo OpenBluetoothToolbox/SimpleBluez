@@ -5,8 +5,6 @@ using namespace SimpleBluez;
 Device1::Device1(std::shared_ptr<SimpleDBus::Connection> conn, std::string path)
     : SimpleDBus::Interface(conn, "org.bluez", path, "org.bluez.Device1") {}
 
-Device1::~Device1() {}
-
 void Device1::Connect() {
     auto msg = create_method_call("Connect");
     _conn->send_with_reply_and_block(msg);

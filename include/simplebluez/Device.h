@@ -11,7 +11,7 @@ namespace SimpleBluez {
 class Device : public SimpleDBus::Proxy {
   public:
     Device(std::shared_ptr<SimpleDBus::Connection> conn, const std::string& bus_name, const std::string& path);
-    ~Device();
+    virtual ~Device() = default;
 
     std::shared_ptr<Service> get_service(const std::string& uuid);
     std::shared_ptr<Characteristic> get_characteristic(const std::string& service_uuid,

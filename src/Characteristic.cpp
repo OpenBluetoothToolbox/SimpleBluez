@@ -1,14 +1,10 @@
 #include <simplebluez/Characteristic.h>
 
-#include <iostream>
-
 using namespace SimpleBluez;
 
 Characteristic::Characteristic(std::shared_ptr<SimpleDBus::Connection> conn, const std::string& bus_name,
                                const std::string& path)
     : Proxy(conn, bus_name, path) {}
-
-Characteristic::~Characteristic() {}
 
 std::shared_ptr<SimpleDBus::Interface> Characteristic::interfaces_create(const std::string& interface_name) {
     if (interface_name == "org.bluez.GattCharacteristic1") {

@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Function to access currently cached value from characteristics.
+- `Notifying` property on Characteristic1.
+- Added OnDisconnected callback to Device1.
+- Added ServicesResolved callback to Device1.
+
+### Fixed
+- Removed unnecessary <iostream> includes.
+- Made sure all classes have proper virtual destructors.
 
 ## [0.1.0] - 2021-12-14
 - Reimplementation of the library based on the SimpleDBus v2.0.0-alpha.2 API.

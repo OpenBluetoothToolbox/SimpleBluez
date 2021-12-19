@@ -5,8 +5,6 @@ using namespace SimpleBluez;
 Adapter1::Adapter1(std::shared_ptr<SimpleDBus::Connection> conn, std::string path)
     : SimpleDBus::Interface(conn, "org.bluez", path, "org.bluez.Adapter1") {}
 
-Adapter1::~Adapter1() {}
-
 void Adapter1::StartDiscovery() {
     auto msg = create_method_call("StartDiscovery");
     _conn->send_with_reply_and_block(msg);

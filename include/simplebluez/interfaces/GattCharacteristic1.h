@@ -14,7 +14,7 @@ class GattCharacteristic1 : public SimpleDBus::Interface {
     typedef enum { REQUEST = 0, COMMAND } WriteType;
 
     GattCharacteristic1(std::shared_ptr<SimpleDBus::Connection> conn, std::string path);
-    ~GattCharacteristic1();
+    virtual ~GattCharacteristic1() = default;
 
     // ----- METHODS -----
     void StartNotify();

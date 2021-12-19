@@ -1,14 +1,10 @@
 #include <simplebluez/ProxyOrg.h>
 #include <simplebluez/ProxyOrgBluez.h>
 
-#include <iostream>
-
 using namespace SimpleBluez;
 
 ProxyOrg::ProxyOrg(std::shared_ptr<SimpleDBus::Connection> conn, const std::string& bus_name, const std::string& path)
     : Proxy(conn, bus_name, path) {}
-
-ProxyOrg::~ProxyOrg() {}
 
 std::vector<std::shared_ptr<Adapter>> ProxyOrg::get_adapters() {
     if (children().find("/org/bluez") == children().end()) {

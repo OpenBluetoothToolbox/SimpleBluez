@@ -1,15 +1,11 @@
 #include <simplebluez/Adapter.h>
 #include <simplebluez/ProxyOrgBluez.h>
 
-#include <iostream>
-
 using namespace SimpleBluez;
 
 ProxyOrgBluez::ProxyOrgBluez(std::shared_ptr<SimpleDBus::Connection> conn, const std::string& bus_name,
                              const std::string& path)
     : Proxy(conn, bus_name, path) {}
-
-ProxyOrgBluez::~ProxyOrgBluez() {}
 
 std::shared_ptr<SimpleDBus::Proxy> ProxyOrgBluez::path_create(const std::string& path) {
     auto child = std::make_shared<Adapter>(_conn, _bus_name, path);
