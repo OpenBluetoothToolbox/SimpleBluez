@@ -51,11 +51,13 @@ void Adapter1::SetDiscoveryFilter(DiscoveryFilter filter) {
 
 bool Adapter1::Discovering() {
     property_refresh("Discovering");
+    std::scoped_lock lock(_property_update_mutex);
     return _properties["Discovering"].get_boolean();
 }
 
 std::string Adapter1::Address() {
     property_refresh("Address");
+    std::scoped_lock lock(_property_update_mutex);
     return _properties["Address"].get_string();
 }
 

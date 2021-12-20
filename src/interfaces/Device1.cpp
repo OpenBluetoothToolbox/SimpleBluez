@@ -17,43 +17,50 @@ void Device1::Disconnect() {
 
 int16_t Device1::RSSI() {
     property_refresh("RSSI");
+    std::scoped_lock lock(_property_update_mutex);
     return _properties["RSSI"].get_int16();
 }
 
 uint16_t Device1::Appearance() {
     property_refresh("Appearance");
+    std::scoped_lock lock(_property_update_mutex);
     return _properties["Appearance"].get_uint16();
 }
 
 std::string Device1::Address() {
     property_refresh("Address");
+    std::scoped_lock lock(_property_update_mutex);
     return _properties["Address"].get_string();
 }
 
 std::string Device1::Alias() {
     property_refresh("Alias");
+    std::scoped_lock lock(_property_update_mutex);
     return _properties["Alias"].get_string();
 }
 
 std::string Device1::Name() {
     property_refresh("Name");
+    std::scoped_lock lock(_property_update_mutex);
     return _properties["Name"].get_string();
 }
 
 std::map<uint16_t, std::vector<uint8_t>> Device1::ManufacturerData() {
     property_refresh("ManufacturerData");
     // Use the locally cached version to avoid parsing the map multiple times.
+    std::scoped_lock lock(_property_update_mutex);
     return _manufacturer_data;
 }
 
 bool Device1::Connected() {
     property_refresh("Connected");
+    std::scoped_lock lock(_property_update_mutex);
     return _properties["Connected"].get_boolean();
 }
 
 bool Device1::ServicesResolved() {
-    std::lock_guard<std::recursive_mutex> lock(_property_update_mutex);
     property_refresh("ServicesResolved");
+    std::scoped_lock lock(_property_update_mutex);
     return _properties["ServicesResolved"].get_boolean();
 }
 
