@@ -21,6 +21,19 @@ else()
     set(STANDALONE false)
 endif()
 
+# Append additional flags for address and thread sanitization
+if(SIMPLEBLUEZ_SANITIZE MATCHES "Address")
+    set(SIMPLEDBUS_SANITIZE ${SIMPLEBLUEZ_SANITIZE})
+    set(EXTRA_COMPILE_OPTIONS ${EXTRA_COMPILE_OPTIONS} -fsanitize=address -fsanitize-recover=address -fno-omit-frame-pointer -fno-common -g)
+    set(EXTRA_LINK_OPTIONS ${EXTRA_LINK_OPTIONS} -fsanitize=address)
+endif()
+
+if(SIMPLEBLUEZ_SANITIZE MATCHES "Thread")
+    set(SIMPLEDBUS_SANITIZE ${SIMPLEBLUEZ_SANITIZE})
+    set(EXTRA_COMPILE_OPTIONS ${EXTRA_COMPILE_OPTIONS} -fsanitize=thread -fno-omit-frame-pointer -fno-common -g)
+    set(EXTRA_LINK_OPTIONS ${EXTRA_LINK_OPTIONS} -fsanitize=thread)
+endif()
+
 # Load default parameters passed in through the command line.
 if(NOT SIMPLEDBUS_GIT_REPOSITORY)
     set(SIMPLEDBUS_GIT_REPOSITORY "https://github.com/OpenBluetoothToolbox/SimpleDBus.git")
@@ -74,11 +87,11 @@ file(GLOB_RECURSE SRC_simplebluez_FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 add_library(simplebluez-static STATIC ${SRC_simplebluez_FILES})
 add_library(simplebluez SHARED ${SRC_simplebluez_FILES})
 
-target_compile_options(simplebluez-static PRIVATE -std=c++17 -fPIC -Wfatal-errors -Wpedantic -O3 -Og)
-target_compile_options(simplebluez PRIVATE -std=c++17 -fPIC -Wfatal-errors -Wpedantic -O3 -Og)
+target_compile_options(simplebluez-static PRIVATE -std=c++17 -fPIC -Wfatal-errors -Wpedantic -O3 -Og ${EXTRA_COMPILE_OPTIONS})
+target_compile_options(simplebluez PRIVATE -std=c++17 -fPIC -Wfatal-errors -Wpedantic -O3 -Og ${EXTRA_COMPILE_OPTIONS})
 
-target_link_libraries(simplebluez-static PUBLIC simpledbus-static pthread)
-target_link_libraries(simplebluez PUBLIC simpledbus-static pthread)
+target_link_libraries(simplebluez-static PUBLIC simpledbus-static pthread ${EXTRA_LINK_OPTIONS})
+target_link_libraries(simplebluez PUBLIC simpledbus-static pthread ${EXTRA_LINK_OPTIONS})
 
 target_link_libraries(simplebluez-static PRIVATE fmt::fmt-header-only)
 target_link_libraries(simplebluez PRIVATE fmt::fmt-header-only)

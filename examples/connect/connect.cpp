@@ -1,7 +1,7 @@
 #include <simplebluez/Bluez.h>
 #include <simplebluez/Exceptions.h>
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <atomic>
 #include <chrono>
 #include <iomanip>
