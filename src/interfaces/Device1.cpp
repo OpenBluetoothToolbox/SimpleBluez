@@ -16,31 +16,26 @@ void Device1::Disconnect() {
 }
 
 int16_t Device1::RSSI() {
-    property_refresh("RSSI");
     std::scoped_lock lock(_property_update_mutex);
     return _properties["RSSI"].get_int16();
 }
 
 uint16_t Device1::Appearance() {
-    property_refresh("Appearance");
     std::scoped_lock lock(_property_update_mutex);
     return _properties["Appearance"].get_uint16();
 }
 
 std::string Device1::Address() {
-    property_refresh("Address");
     std::scoped_lock lock(_property_update_mutex);
     return _properties["Address"].get_string();
 }
 
 std::string Device1::Alias() {
-    property_refresh("Alias");
     std::scoped_lock lock(_property_update_mutex);
     return _properties["Alias"].get_string();
 }
 
 std::string Device1::Name() {
-    property_refresh("Name");
     std::scoped_lock lock(_property_update_mutex);
     return _properties["Name"].get_string();
 }

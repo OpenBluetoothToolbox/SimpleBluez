@@ -56,7 +56,6 @@ bool Adapter1::Discovering() {
 }
 
 std::string Adapter1::Address() {
-    property_refresh("Address");
     std::scoped_lock lock(_property_update_mutex);
     return _properties["Address"].get_string();
 }
