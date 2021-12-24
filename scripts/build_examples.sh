@@ -22,5 +22,5 @@ fi
 # Compile!
 mkdir -p $BUILD_PATH
 cd $BUILD_PATH
-cmake -H$SOURCE_ROOT -DSIMPLEBLUEZ_SANITIZE=Thread
+cmake -H$SOURCE_ROOT
 make -j
