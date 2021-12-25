@@ -22,12 +22,7 @@ std::shared_ptr<SimpleDBus::Interface> Service::interfaces_create(const std::str
 }
 
 std::shared_ptr<GattService1> Service::gattservice1() {
-    if (_interfaces.find("org.bluez.GattService1") == _interfaces.end()) {
-        // TODO: throw exception
-        return nullptr;
-    }
-
-    return std::dynamic_pointer_cast<GattService1>(_interfaces.at("org.bluez.GattService1"));
+    return std::dynamic_pointer_cast<GattService1>(interface_get("org.bluez.GattService1"));
 }
 
 std::vector<std::shared_ptr<Characteristic>> Service::characteristics() {

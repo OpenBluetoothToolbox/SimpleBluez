@@ -6,7 +6,7 @@ using namespace SimpleBluez;
 
 Device::Device(std::shared_ptr<SimpleDBus::Connection> conn, const std::string& bus_name, const std::string& path)
     : Proxy(conn, bus_name, path) {}
-    
+
 std::shared_ptr<SimpleDBus::Proxy> Device::path_create(const std::string& path) {
     auto child = std::make_shared<Service>(_conn, _bus_name, path);
     return std::static_pointer_cast<SimpleDBus::Proxy>(child);
@@ -22,12 +22,7 @@ std::shared_ptr<SimpleDBus::Interface> Device::interfaces_create(const std::stri
 }
 
 std::shared_ptr<Device1> Device::device1() {
-    if (_interfaces.find("org.bluez.Device1") == _interfaces.end()) {
-        // TODO: throw exception
-        return nullptr;
-    }
-
-    return std::dynamic_pointer_cast<Device1>(_interfaces.at("org.bluez.Device1"));
+    return std::dynamic_pointer_cast<Device1>(interface_get("org.bluez.Device1"));
 }
 
 std::vector<std::shared_ptr<Service>> Device::services() {

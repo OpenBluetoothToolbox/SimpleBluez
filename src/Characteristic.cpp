@@ -16,12 +16,7 @@ std::shared_ptr<SimpleDBus::Interface> Characteristic::interfaces_create(const s
 }
 
 std::shared_ptr<GattCharacteristic1> Characteristic::gattcharacteristic1() {
-    if (_interfaces.find("org.bluez.GattCharacteristic1") == _interfaces.end()) {
-        // TODO: throw exception
-        return nullptr;
-    }
-
-    return std::dynamic_pointer_cast<GattCharacteristic1>(_interfaces.at("org.bluez.GattCharacteristic1"));
+    return std::dynamic_pointer_cast<GattCharacteristic1>(interface_get("org.bluez.GattCharacteristic1"));
 }
 
 bool Characteristic::notifying() { return gattcharacteristic1()->Notifying(); }

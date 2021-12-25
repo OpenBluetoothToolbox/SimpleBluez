@@ -52,5 +52,5 @@ std::shared_ptr<SimpleDBus::Proxy> Bluez::path_create(const std::string& path) {
 }
 
 std::shared_ptr<SimpleDBus::ObjectManager> Bluez::object_manager() {
-    return std::dynamic_pointer_cast<SimpleDBus::ObjectManager>(_interfaces["org.freedesktop.DBus.ObjectManager"]);
+    return std::dynamic_pointer_cast<SimpleDBus::ObjectManager>(interface_get("org.freedesktop.DBus.ObjectManager"));
 }

@@ -23,12 +23,7 @@ std::shared_ptr<SimpleDBus::Interface> Adapter::interfaces_create(const std::str
 }
 
 std::shared_ptr<Adapter1> Adapter::adapter1() {
-    if (_interfaces.find("org.bluez.Adapter1") == _interfaces.end()) {
-        // TODO: throw exception
-        return nullptr;
-    }
-
-    return std::dynamic_pointer_cast<Adapter1>(_interfaces.at("org.bluez.Adapter1"));
+    return std::dynamic_pointer_cast<Adapter1>(interface_get("org.bluez.Adapter1"));
 }
 
 std::string Adapter::identifier() const {
