@@ -10,7 +10,7 @@ namespace SimpleBluez {
 class Device1 : public SimpleDBus::Interface {
   public:
     Device1(std::shared_ptr<SimpleDBus::Connection> conn, std::string path);
-    virtual ~Device1() = default;
+    virtual ~Device1();
 
     // ----- METHODS -----
     void Connect();

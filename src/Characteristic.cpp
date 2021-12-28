@@ -6,7 +6,7 @@ Characteristic::Characteristic(std::shared_ptr<SimpleDBus::Connection> conn, con
                                const std::string& path)
     : Proxy(conn, bus_name, path) {}
 
-Characteristic::~Characteristic() { clear_on_value_changed(); }
+Characteristic::~Characteristic() {}
 
 std::shared_ptr<SimpleDBus::Interface> Characteristic::interfaces_create(const std::string& interface_name) {
     if (interface_name == "org.bluez.GattCharacteristic1") {

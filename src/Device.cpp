@@ -7,10 +7,7 @@ using namespace SimpleBluez;
 Device::Device(std::shared_ptr<SimpleDBus::Connection> conn, const std::string& bus_name, const std::string& path)
     : Proxy(conn, bus_name, path) {}
 
-Device::~Device() {
-    clear_on_disconnected();
-    clear_on_services_resolved();
-}
+Device::~Device() {}
 
 std::shared_ptr<SimpleDBus::Proxy> Device::path_create(const std::string& path) {
     auto child = std::make_shared<Service>(_conn, _bus_name, path);
