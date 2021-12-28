@@ -6,6 +6,8 @@ Characteristic::Characteristic(std::shared_ptr<SimpleDBus::Connection> conn, con
                                const std::string& path)
     : Proxy(conn, bus_name, path) {}
 
+Characteristic::~Characteristic() { clear_on_value_changed(); }
+
 std::shared_ptr<SimpleDBus::Interface> Characteristic::interfaces_create(const std::string& interface_name) {
     if (interface_name == "org.bluez.GattCharacteristic1") {
         return std::static_pointer_cast<SimpleDBus::Interface>(std::make_shared<GattCharacteristic1>(_conn, _path));
@@ -42,3 +44,5 @@ void Characteristic::stop_notify() { gattcharacteristic1()->StopNotify(); }
 void Characteristic::set_on_value_changed(std::function<void(ByteArray new_value)> callback) {
     gattcharacteristic1()->OnValueChanged.load([this, callback]() { callback(gattcharacteristic1()->Value()); });
 }
+
+void Characteristic::clear_on_value_changed() { gattcharacteristic1()->OnValueChanged.unload(); }

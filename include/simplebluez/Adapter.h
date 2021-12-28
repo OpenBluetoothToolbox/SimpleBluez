@@ -14,7 +14,7 @@ class Adapter : public SimpleDBus::Proxy {
     typedef Adapter1::DiscoveryFilter DiscoveryFilter;
 
     Adapter(std::shared_ptr<SimpleDBus::Connection> conn, const std::string& bus_name, const std::string& path);
-    virtual ~Adapter() = default;
+    virtual ~Adapter();
 
     std::string identifier() const;
     std::string address();
@@ -25,7 +25,9 @@ class Adapter : public SimpleDBus::Proxy {
     void discovery_stop();
 
     std::shared_ptr<Device> device_get(const std::string& path);
+    
     void set_on_device_updated(std::function<void(std::shared_ptr<Device> device)> callback);
+    void clear_on_device_updated();
 
   private:
     std::shared_ptr<SimpleDBus::Proxy> path_create(const std::string& path) override;

@@ -7,6 +7,11 @@ using namespace SimpleBluez;
 Device::Device(std::shared_ptr<SimpleDBus::Connection> conn, const std::string& bus_name, const std::string& path)
     : Proxy(conn, bus_name, path) {}
 
+Device::~Device() {
+    clear_on_disconnected();
+    clear_on_services_resolved();
+}
+
 std::shared_ptr<SimpleDBus::Proxy> Device::path_create(const std::string& path) {
     auto child = std::make_shared<Service>(_conn, _bus_name, path);
     return std::static_pointer_cast<SimpleDBus::Proxy>(child);
@@ -63,4 +68,8 @@ bool Device::services_resolved() { return device1()->ServicesResolved(); }
 
 void Device::set_on_disconnected(std::function<void()> callback) { device1()->OnDisconnected.load(callback); }
 
+void Device::clear_on_disconnected() { device1()->OnDisconnected.unload(); }
+
 void Device::set_on_services_resolved(std::function<void()> callback) { device1()->OnServicesResolved.load(callback); }
+
+void Device::clear_on_services_resolved() { device1()->OnServicesResolved.unload(); }

@@ -8,6 +8,8 @@ using namespace SimpleBluez;
 Adapter::Adapter(std::shared_ptr<SimpleDBus::Connection> conn, const std::string& bus_name, const std::string& path)
     : Proxy(conn, bus_name, path) {}
 
+Adapter::~Adapter() { clear_on_device_updated(); }
+
 std::shared_ptr<SimpleDBus::Proxy> Adapter::path_create(const std::string& path) {
     auto child = std::make_shared<Device>(_conn, _bus_name, path);
     return std::static_pointer_cast<SimpleDBus::Proxy>(child);
@@ -55,4 +57,9 @@ void Adapter::set_on_device_updated(std::function<void(std::shared_ptr<Device> d
 
     on_child_created.load(on_device_updated);
     on_child_signal_received.load(on_device_updated);
+}
+
+void Adapter::clear_on_device_updated() {
+    on_child_created.unload();
+    on_child_signal_received.unload();
 }

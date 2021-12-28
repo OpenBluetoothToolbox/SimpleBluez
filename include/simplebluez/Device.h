@@ -11,7 +11,7 @@ namespace SimpleBluez {
 class Device : public SimpleDBus::Proxy {
   public:
     Device(std::shared_ptr<SimpleDBus::Connection> conn, const std::string& bus_name, const std::string& path);
-    virtual ~Device() = default;
+    virtual ~Device();
 
     std::shared_ptr<Service> get_service(const std::string& uuid);
     std::shared_ptr<Characteristic> get_characteristic(const std::string& service_uuid,
@@ -35,7 +35,9 @@ class Device : public SimpleDBus::Proxy {
 
     // ----- CALLBACKS -----
     void set_on_services_resolved(std::function<void()> callback);
+    void clear_on_services_resolved();
     void set_on_disconnected(std::function<void()> callback);
+    void clear_on_disconnected();
 
   private:
     std::shared_ptr<SimpleDBus::Proxy> path_create(const std::string& path) override;
