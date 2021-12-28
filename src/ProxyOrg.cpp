@@ -7,12 +7,7 @@ ProxyOrg::ProxyOrg(std::shared_ptr<SimpleDBus::Connection> conn, const std::stri
     : Proxy(conn, bus_name, path) {}
 
 std::vector<std::shared_ptr<Adapter>> ProxyOrg::get_adapters() {
-    if (children().find("/org/bluez") == children().end()) {
-        // TODO: throw exception
-        return {};
-    }
-
-    return std::dynamic_pointer_cast<ProxyOrgBluez>(children().at("/org/bluez"))->get_adapters();
+    return std::dynamic_pointer_cast<ProxyOrgBluez>(path_get("/org/bluez"))->get_adapters();
 }
 
 std::shared_ptr<SimpleDBus::Proxy> ProxyOrg::path_create(const std::string& path) {

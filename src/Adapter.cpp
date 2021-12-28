@@ -42,12 +42,7 @@ void Adapter::discovery_start() { adapter1()->StartDiscovery(); }
 void Adapter::discovery_stop() { adapter1()->StopDiscovery(); }
 
 std::shared_ptr<Device> Adapter::device_get(const std::string& path) {
-    if (_children.find(path) == _children.end()) {
-        // TODO: throw exception
-        return nullptr;
-    }
-
-    return std::dynamic_pointer_cast<Device>(_children.at(path));
+    return std::dynamic_pointer_cast<Device>(path_get(path));
 }
 
 void Adapter::set_on_device_updated(std::function<void(std::shared_ptr<Device> device)> callback) {

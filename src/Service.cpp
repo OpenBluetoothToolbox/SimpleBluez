@@ -25,22 +25,13 @@ std::shared_ptr<GattService1> Service::gattservice1() {
     return std::dynamic_pointer_cast<GattService1>(interface_get("org.bluez.GattService1"));
 }
 
-std::vector<std::shared_ptr<Characteristic>> Service::characteristics() {
-    std::vector<std::shared_ptr<Characteristic>> characteristics;
-
-    for (auto& [path, child] : _children) {
-        auto characteristic = std::dynamic_pointer_cast<Characteristic>(child);
-        if (characteristic) {
-            characteristics.push_back(characteristic);
-        }
-    }
-    return characteristics;
-}
+std::vector<std::shared_ptr<Characteristic>> Service::characteristics() { return children_casted<Characteristic>(); }
 
 std::shared_ptr<Characteristic> Service::get_characteristic(const std::string& uuid) {
-    for (auto& [path, child] : _children) {
-        auto characteristic = std::dynamic_pointer_cast<Characteristic>(child);
-        if (characteristic && characteristic->uuid() == uuid) {
+    auto characteristics_all = characteristics();
+
+    for (auto& characteristic : characteristics_all) {
+        if (characteristic->uuid() == uuid) {
             return characteristic;
         }
     }

@@ -17,14 +17,4 @@ std::shared_ptr<SimpleDBus::Interface> ProxyOrgBluez::interfaces_create(const st
     return std::static_pointer_cast<SimpleDBus::Interface>(interface);
 }
 
-std::vector<std::shared_ptr<Adapter>> ProxyOrgBluez::get_adapters() {
-    std::vector<std::shared_ptr<Adapter>> adapters;
-
-    for (auto& [path, child] : _children) {
-        auto adapter = std::dynamic_pointer_cast<Adapter>(child);
-        if (adapter) {
-            adapters.push_back(adapter);
-        }
-    }
-    return adapters;
-}
+std::vector<std::shared_ptr<Adapter>> ProxyOrgBluez::get_adapters() { return children_casted<Adapter>(); }

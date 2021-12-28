@@ -25,22 +25,13 @@ std::shared_ptr<Device1> Device::device1() {
     return std::dynamic_pointer_cast<Device1>(interface_get("org.bluez.Device1"));
 }
 
-std::vector<std::shared_ptr<Service>> Device::services() {
-    std::vector<std::shared_ptr<Service>> services;
-
-    for (auto& [path, child] : _children) {
-        auto service = std::dynamic_pointer_cast<Service>(child);
-        if (service) {
-            services.push_back(service);
-        }
-    }
-    return services;
-}
+std::vector<std::shared_ptr<Service>> Device::services() { return children_casted<Service>(); }
 
 std::shared_ptr<Service> Device::get_service(const std::string& uuid) {
-    for (auto& [path, child] : _children) {
-        auto service = std::dynamic_pointer_cast<Service>(child);
-        if (service && service->uuid() == uuid) {
+    auto services_all = services();
+
+    for (auto& service : services_all) {
+        if (service->uuid() == uuid) {
             return service;
         }
     }

@@ -38,12 +38,7 @@ void Bluez::run_async() {
 }
 
 std::vector<std::shared_ptr<Adapter>> Bluez::get_adapters() {
-    if (children().find("/org") == children().end()) {
-        // TODO: throw exception
-        return {};
-    }
-
-    return std::dynamic_pointer_cast<ProxyOrg>(children().at("/org"))->get_adapters();
+    return std::dynamic_pointer_cast<ProxyOrg>(path_get("/org"))->get_adapters();
 }
 
 std::shared_ptr<SimpleDBus::Proxy> Bluez::path_create(const std::string& path) {
