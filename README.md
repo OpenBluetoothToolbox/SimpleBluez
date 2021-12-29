@@ -40,6 +40,16 @@ make -j
 To build and run unit and integration tests, the following packages are required:
 `sudo apt install libgtest-dev libgmock-dev python3-dev`
 
+#### Address Sanitizer
+In order to run tests with Address Sanitizer, CMake needs to be called with
+the following option: `-DSIMPLEBLUEZ_SANITIZE=Address`. It is also important to
+set the environment variable `PYTHONMALLOC=malloc` to prevent Python's memory
+allocator from triggering false positives.
+
+#### Thread Sanitizer
+In order to run tests with Thread Sanitizer, CMake needs to be called with
+the following option: `-DSIMPLEBLUEZ_SANITIZE=Thread`.
+
 ## Security
 
 One key security feature of the library is it allows the user to specify

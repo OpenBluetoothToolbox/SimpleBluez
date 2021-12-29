@@ -3,8 +3,6 @@
 
 #include <simplebluez/interfaces/Adapter1.h>
 
-#include <iostream>
-
 using namespace SimpleBluez;
 
 Adapter::Adapter(std::shared_ptr<SimpleDBus::Connection> conn, const std::string& bus_name, const std::string& path)
@@ -27,12 +25,7 @@ std::shared_ptr<SimpleDBus::Interface> Adapter::interfaces_create(const std::str
 }
 
 std::shared_ptr<Adapter1> Adapter::adapter1() {
-    if (_interfaces.find("org.bluez.Adapter1") == _interfaces.end()) {
-        // TODO: throw exception
-        return nullptr;
-    }
-
-    return std::dynamic_pointer_cast<Adapter1>(_interfaces.at("org.bluez.Adapter1"));
+    return std::dynamic_pointer_cast<Adapter1>(interface_get("org.bluez.Adapter1"));
 }
 
 std::string Adapter::identifier() const {
@@ -51,12 +44,7 @@ void Adapter::discovery_start() { adapter1()->StartDiscovery(); }
 void Adapter::discovery_stop() { adapter1()->StopDiscovery(); }
 
 std::shared_ptr<Device> Adapter::device_get(const std::string& path) {
-    if (_children.find(path) == _children.end()) {
-        // TODO: throw exception
-        return nullptr;
-    }
-
-    return std::dynamic_pointer_cast<Device>(_children.at(path));
+    return std::dynamic_pointer_cast<Device>(path_get(path));
 }
 
 void Adapter::set_on_device_updated(std::function<void(std::shared_ptr<Device> device)> callback) {
@@ -69,4 +57,9 @@ void Adapter::set_on_device_updated(std::function<void(std::shared_ptr<Device> d
 
     on_child_created.load(on_device_updated);
     on_child_signal_received.load(on_device_updated);
+}
+
+void Adapter::clear_on_device_updated() {
+    on_child_created.unload();
+    on_child_signal_received.unload();
 }

@@ -2,14 +2,10 @@
 #include <simplebluez/Exceptions.h>
 #include <simplebluez/Service.h>
 
-#include <iostream>
-
 using namespace SimpleBluez;
 
 Service::Service(std::shared_ptr<SimpleDBus::Connection> conn, const std::string& bus_name, const std::string& path)
     : Proxy(conn, bus_name, path) {}
-
-Service::~Service() {}
 
 std::shared_ptr<SimpleDBus::Proxy> Service::path_create(const std::string& path) {
     auto child = std::make_shared<Characteristic>(_conn, _bus_name, path);
@@ -26,30 +22,16 @@ std::shared_ptr<SimpleDBus::Interface> Service::interfaces_create(const std::str
 }
 
 std::shared_ptr<GattService1> Service::gattservice1() {
-    if (_interfaces.find("org.bluez.GattService1") == _interfaces.end()) {
-        // TODO: throw exception
-        return nullptr;
-    }
-
-    return std::dynamic_pointer_cast<GattService1>(_interfaces.at("org.bluez.GattService1"));
+    return std::dynamic_pointer_cast<GattService1>(interface_get("org.bluez.GattService1"));
 }
 
-std::vector<std::shared_ptr<Characteristic>> Service::characteristics() {
-    std::vector<std::shared_ptr<Characteristic>> characteristics;
-
-    for (auto& [path, child] : _children) {
-        auto characteristic = std::dynamic_pointer_cast<Characteristic>(child);
-        if (characteristic) {
-            characteristics.push_back(characteristic);
-        }
-    }
-    return characteristics;
-}
+std::vector<std::shared_ptr<Characteristic>> Service::characteristics() { return children_casted<Characteristic>(); }
 
 std::shared_ptr<Characteristic> Service::get_characteristic(const std::string& uuid) {
-    for (auto& [path, child] : _children) {
-        auto characteristic = std::dynamic_pointer_cast<Characteristic>(child);
-        if (characteristic && characteristic->uuid() == uuid) {
+    auto characteristics_all = characteristics();
+
+    for (auto& characteristic : characteristics_all) {
+        if (characteristic->uuid() == uuid) {
             return characteristic;
         }
     }

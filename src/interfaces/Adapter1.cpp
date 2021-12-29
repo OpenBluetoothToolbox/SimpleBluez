@@ -5,8 +5,6 @@ using namespace SimpleBluez;
 Adapter1::Adapter1(std::shared_ptr<SimpleDBus::Connection> conn, std::string path)
     : SimpleDBus::Interface(conn, "org.bluez", path, "org.bluez.Adapter1") {}
 
-Adapter1::~Adapter1() {}
-
 void Adapter1::StartDiscovery() {
     auto msg = create_method_call("StartDiscovery");
     _conn->send_with_reply_and_block(msg);
@@ -51,13 +49,17 @@ void Adapter1::SetDiscoveryFilter(DiscoveryFilter filter) {
     _conn->send_with_reply_and_block(msg);
 }
 
-bool Adapter1::Discovering() {
-    property_refresh("Discovering");
+bool Adapter1::Discovering(bool refresh) {
+    if (refresh) {
+        property_refresh("Discovering");
+    }
+
+    std::scoped_lock lock(_property_update_mutex);
     return _properties["Discovering"].get_boolean();
 }
 
 std::string Adapter1::Address() {
-    property_refresh("Address");
+    std::scoped_lock lock(_property_update_mutex);
     return _properties["Address"].get_string();
 }
 

@@ -2,8 +2,6 @@
 #include <simplebluez/Exceptions.h>
 #include <simplebluez/Service.h>
 
-#include <iostream>
-
 using namespace SimpleBluez;
 
 Device::Device(std::shared_ptr<SimpleDBus::Connection> conn, const std::string& bus_name, const std::string& path)
@@ -26,30 +24,16 @@ std::shared_ptr<SimpleDBus::Interface> Device::interfaces_create(const std::stri
 }
 
 std::shared_ptr<Device1> Device::device1() {
-    if (_interfaces.find("org.bluez.Device1") == _interfaces.end()) {
-        // TODO: throw exception
-        return nullptr;
-    }
-
-    return std::dynamic_pointer_cast<Device1>(_interfaces.at("org.bluez.Device1"));
+    return std::dynamic_pointer_cast<Device1>(interface_get("org.bluez.Device1"));
 }
 
-std::vector<std::shared_ptr<Service>> Device::services() {
-    std::vector<std::shared_ptr<Service>> services;
-
-    for (auto& [path, child] : _children) {
-        auto service = std::dynamic_pointer_cast<Service>(child);
-        if (service) {
-            services.push_back(service);
-        }
-    }
-    return services;
-}
+std::vector<std::shared_ptr<Service>> Device::services() { return children_casted<Service>(); }
 
 std::shared_ptr<Service> Device::get_service(const std::string& uuid) {
-    for (auto& [path, child] : _children) {
-        auto service = std::dynamic_pointer_cast<Service>(child);
-        if (service && service->uuid() == uuid) {
+    auto services_all = services();
+
+    for (auto& service : services_all) {
+        if (service->uuid() == uuid) {
             return service;
         }
     }
@@ -78,3 +62,11 @@ std::map<uint16_t, std::vector<uint8_t>> Device::manufacturer_data() { return de
 bool Device::connected() { return device1()->Connected(); }
 
 bool Device::services_resolved() { return device1()->ServicesResolved(); }
+
+void Device::set_on_disconnected(std::function<void()> callback) { device1()->OnDisconnected.load(callback); }
+
+void Device::clear_on_disconnected() { device1()->OnDisconnected.unload(); }
+
+void Device::set_on_services_resolved(std::function<void()> callback) { device1()->OnServicesResolved.load(callback); }
+
+void Device::clear_on_services_resolved() { device1()->OnServicesResolved.unload(); }

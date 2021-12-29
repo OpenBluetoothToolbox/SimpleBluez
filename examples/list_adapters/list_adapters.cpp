@@ -1,6 +1,6 @@
 #include <simplebluez/Bluez.h>
 
-#include <stdlib.h>
+#include <cstdlib>
 #include <chrono>
 #include <iomanip>
 #include <iostream>

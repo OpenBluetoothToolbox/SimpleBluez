@@ -14,7 +14,7 @@ class GattCharacteristic1 : public SimpleDBus::Interface {
     typedef enum { REQUEST = 0, COMMAND } WriteType;
 
     GattCharacteristic1(std::shared_ptr<SimpleDBus::Connection> conn, std::string path);
-    ~GattCharacteristic1();
+    virtual ~GattCharacteristic1();
 
     // ----- METHODS -----
     void StartNotify();
@@ -25,7 +25,7 @@ class GattCharacteristic1 : public SimpleDBus::Interface {
     // ----- PROPERTIES -----
     std::string UUID();
     ByteArray Value();
-    bool Notifying();
+    bool Notifying(bool refresh = true);
 
     // ----- CALLBACKS -----
     SimpleDBus::Callback<std::function<void()>> OnValueChanged;

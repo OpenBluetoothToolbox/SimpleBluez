@@ -9,7 +9,7 @@ namespace SimpleBluez {
 class ProxyOrg : public SimpleDBus::Proxy {
   public:
     ProxyOrg(std::shared_ptr<SimpleDBus::Connection> conn, const std::string& bus_name, const std::string& path);
-    ~ProxyOrg();
+    virtual ~ProxyOrg() = default;
 
     std::vector<std::shared_ptr<Adapter>> get_adapters();
 

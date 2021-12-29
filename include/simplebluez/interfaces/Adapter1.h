@@ -9,9 +9,9 @@ namespace SimpleBluez {
 class Adapter1 : public SimpleDBus::Interface {
   public:
     typedef enum { AUTO, BREDR, LE } DiscoveryFilter;
-    
+
     Adapter1(std::shared_ptr<SimpleDBus::Connection> conn, std::string path);
-    ~Adapter1();
+    virtual ~Adapter1() = default;
 
     // ----- METHODS -----
     void StartDiscovery();
@@ -21,7 +21,7 @@ class Adapter1 : public SimpleDBus::Interface {
     // void RemoveDevice(SimpleDBus::Holder device); // TODO: Implement
 
     // ----- PROPERTIES -----
-    bool Discovering();
+    bool Discovering(bool refresh = true);
     std::string Address();
 
   protected:

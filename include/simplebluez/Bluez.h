@@ -12,7 +12,7 @@ namespace SimpleBluez {
 class Bluez : public SimpleDBus::Proxy {
   public:
     Bluez();
-    ~Bluez();
+    virtual ~Bluez();
 
     void init();
     void run_async();

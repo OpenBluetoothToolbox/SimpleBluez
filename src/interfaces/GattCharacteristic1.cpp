@@ -5,7 +5,7 @@ using namespace SimpleBluez;
 GattCharacteristic1::GattCharacteristic1(std::shared_ptr<SimpleDBus::Connection> conn, std::string path)
     : SimpleDBus::Interface(conn, "org.bluez", path, "org.bluez.GattCharacteristic1") {}
 
-GattCharacteristic1::~GattCharacteristic1() {}
+GattCharacteristic1::~GattCharacteristic1() { OnValueChanged.unload(); }
 
 void GattCharacteristic1::StartNotify() {
     auto msg = create_method_call("StartNotify");
@@ -52,18 +52,27 @@ ByteArray GattCharacteristic1::ReadValue() {
 
 std::string GattCharacteristic1::UUID() {
     // As the UUID property doesn't change, we can cache it
+    std::scoped_lock lock(_property_update_mutex);
     return _uuid;
 }
 
-ByteArray GattCharacteristic1::Value() { return _value; }
+ByteArray GattCharacteristic1::Value() {
+    std::scoped_lock lock(_property_update_mutex);
+    return _value;
+}
 
-bool GattCharacteristic1::Notifying() {
-    property_refresh("Notifying");
+bool GattCharacteristic1::Notifying(bool refresh) {
+    if (refresh) {
+        property_refresh("Notifying");
+    }
+
+    std::scoped_lock lock(_property_update_mutex);
     return _properties["Notifying"].get_boolean();
 }
 
 void GattCharacteristic1::property_changed(std::string option_name) {
     if (option_name == "UUID") {
+        std::scoped_lock lock(_property_update_mutex);
         _uuid = _properties["UUID"].get_string();
     } else if (option_name == "Value") {
         update_value(_properties["Value"]);
@@ -72,6 +81,7 @@ void GattCharacteristic1::property_changed(std::string option_name) {
 }
 
 void GattCharacteristic1::update_value(SimpleDBus::Holder& new_value) {
+    std::scoped_lock lock(_property_update_mutex);
     auto value_array = new_value.get_array();
 
     char* value_data = new char[value_array.size()];

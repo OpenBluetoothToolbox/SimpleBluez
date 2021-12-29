@@ -1,9 +1,9 @@
 #include <simplebluez/Bluez.h>
 #include <simplebluez/Exceptions.h>
 
-#include <cstdlib>
 #include <atomic>
 #include <chrono>
+#include <cstdlib>
 #include <iomanip>
 #include <iostream>
 #include <thread>
@@ -22,6 +22,14 @@ void millisecond_delay(int ms) {
     for (int i = 0; i < ms; i++) {
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
+}
+
+void print_byte_array(SimpleBluez::ByteArray& bytes) {
+    for (auto byte : bytes) {
+        std::cout << std::hex << std::setfill('0') << (uint32_t)((uint8_t)byte) << " ";
+        break;
+    }
+    std::cout << std::endl;
 }
 
 std::vector<std::shared_ptr<SimpleBluez::Device>> peripherals;
@@ -89,13 +97,30 @@ int main(int argc, char* argv[]) {
             return 1;
         }
 
-        std::cout << "Successfully connected, listing services." << std::endl;
+        // Store all services and characteristics in a vector.
+        std::vector<std::pair<std::shared_ptr<SimpleBluez::Service>, std::shared_ptr<SimpleBluez::Characteristic>>>
+            char_list;
         for (auto service : peripheral->services()) {
-            std::cout << "Service: " << service->uuid() << std::endl;
             for (auto characteristic : service->characteristics()) {
-                std::cout << "  Characteristic: " << characteristic->uuid() << std::endl;
+                char_list.push_back(std::make_pair(service, characteristic));
             }
         }
+
+        std::cout << "The following services and characteristics were found:" << std::endl;
+        for (int i = 0; i < char_list.size(); i++) {
+            std::cout << "[" << i << "] " << char_list[i].first->uuid() << " " << char_list[i].second->uuid()
+                      << std::endl;
+        }
+
+        std::cout << "Please select a characteristic to read: ";
+        std::cin >> selection;
+
+        if (selection >= 0 && selection < char_list.size()) {
+            SimpleBluez::ByteArray value = char_list[selection].second->read();
+            std::cout << "Characteristic contents were: ";
+            print_byte_array(value);
+        }
+
         peripheral->disconnect();
 
         // Sleep for an additional second before returning.

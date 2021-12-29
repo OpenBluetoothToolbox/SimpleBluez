@@ -38,12 +38,7 @@ void Bluez::run_async() {
 }
 
 std::vector<std::shared_ptr<Adapter>> Bluez::get_adapters() {
-    if (children().find("/org") == children().end()) {
-        // TODO: throw exception
-        return {};
-    }
-
-    return std::dynamic_pointer_cast<ProxyOrg>(children().at("/org"))->get_adapters();
+    return std::dynamic_pointer_cast<ProxyOrg>(path_get("/org"))->get_adapters();
 }
 
 std::shared_ptr<SimpleDBus::Proxy> Bluez::path_create(const std::string& path) {
@@ -52,5 +47,5 @@ std::shared_ptr<SimpleDBus::Proxy> Bluez::path_create(const std::string& path) {
 }
 
 std::shared_ptr<SimpleDBus::ObjectManager> Bluez::object_manager() {
-    return std::dynamic_pointer_cast<SimpleDBus::ObjectManager>(_interfaces["org.freedesktop.DBus.ObjectManager"]);
+    return std::dynamic_pointer_cast<SimpleDBus::ObjectManager>(interface_get("org.freedesktop.DBus.ObjectManager"));
 }
