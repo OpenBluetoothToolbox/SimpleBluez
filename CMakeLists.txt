@@ -39,7 +39,7 @@ if(NOT SIMPLEDBUS_GIT_REPOSITORY)
     set(SIMPLEDBUS_GIT_REPOSITORY "https://github.com/OpenBluetoothToolbox/SimpleDBus.git")
 endif()
 if(NOT SIMPLEDBUS_GIT_TAG)
-    set(SIMPLEDBUS_GIT_TAG feature/cleanup) # "v2.0.0-alpha.2"
+    set(SIMPLEDBUS_GIT_TAG "v2.0.0")
 endif()
 
 if(NOT SIMPLEDBUS_LOCAL_PATH)
