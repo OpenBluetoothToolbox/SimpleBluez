@@ -45,35 +45,46 @@ std::string Device1::Name() {
     return _properties["Name"].get_string();
 }
 
-std::map<uint16_t, std::vector<uint8_t>> Device1::ManufacturerData() {
-    property_refresh("ManufacturerData");
+std::map<uint16_t, std::vector<uint8_t>> Device1::ManufacturerData(bool refresh) {
+    if (refresh) {
+        property_refresh("ManufacturerData");
+    }
+
     // Use the locally cached version to avoid parsing the map multiple times.
     std::scoped_lock lock(_property_update_mutex);
     return _manufacturer_data;
 }
 
-bool Device1::Connected() {
-    property_refresh("Connected");
+bool Device1::Connected(bool refresh) {
+    if (refresh) {
+        property_refresh("Connected");
+    }
+
     std::scoped_lock lock(_property_update_mutex);
     return _properties["Connected"].get_boolean();
 }
 
-bool Device1::ServicesResolved() {
-    property_refresh("ServicesResolved");
+bool Device1::ServicesResolved(bool refresh) {
+    if (refresh) {
+        property_refresh("ServicesResolved");
+    }
+
     std::scoped_lock lock(_property_update_mutex);
     return _properties["ServicesResolved"].get_boolean();
 }
 
 void Device1::property_changed(std::string option_name) {
     if (option_name == "Connected") {
-        if (!_properties["Connected"].get_boolean()) {
+        if (!Connected(false)) {
             OnDisconnected();
         }
     } else if (option_name == "ServicesResolved") {
-        if (_properties["ServicesResolved"].get_boolean()) {
+        if (ServicesResolved(false)) {
             OnServicesResolved();
         }
     } else if (option_name == "ManufacturerData") {
+        std::scoped_lock lock(_property_update_mutex);
+
         _manufacturer_data.clear();
         std::map<uint16_t, SimpleDBus::Holder> manuf_data = _properties["ManufacturerData"].get_dict_uint16();
         // Loop through all received keys and store them.

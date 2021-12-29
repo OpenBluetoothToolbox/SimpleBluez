@@ -25,7 +25,7 @@ class GattCharacteristic1 : public SimpleDBus::Interface {
     // ----- PROPERTIES -----
     std::string UUID();
     ByteArray Value();
-    bool Notifying();
+    bool Notifying(bool refresh = true);
 
     // ----- CALLBACKS -----
     SimpleDBus::Callback<std::function<void()>> OnValueChanged;

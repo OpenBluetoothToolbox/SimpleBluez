@@ -61,14 +61,18 @@ ByteArray GattCharacteristic1::Value() {
     return _value;
 }
 
-bool GattCharacteristic1::Notifying() {
-    property_refresh("Notifying");
+bool GattCharacteristic1::Notifying(bool refresh) {
+    if (refresh) {
+        property_refresh("Notifying");
+    }
+
     std::scoped_lock lock(_property_update_mutex);
     return _properties["Notifying"].get_boolean();
 }
 
 void GattCharacteristic1::property_changed(std::string option_name) {
     if (option_name == "UUID") {
+        std::scoped_lock lock(_property_update_mutex);
         _uuid = _properties["UUID"].get_string();
     } else if (option_name == "Value") {
         update_value(_properties["Value"]);

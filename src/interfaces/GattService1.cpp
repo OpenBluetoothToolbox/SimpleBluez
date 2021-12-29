@@ -13,6 +13,7 @@ std::string GattService1::UUID() {
 
 void GattService1::property_changed(std::string option_name) {
     if (option_name == "UUID") {
+        std::scoped_lock lock(_property_update_mutex);
         _uuid = _properties["UUID"].get_string();
     }
 }

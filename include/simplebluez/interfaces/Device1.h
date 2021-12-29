@@ -18,13 +18,13 @@ class Device1 : public SimpleDBus::Interface {
 
     // ----- PROPERTIES -----
     int16_t RSSI();
-    uint16_t Appearance(); // On Bluez 5.53, this always returns 0.
+    uint16_t Appearance();  // On Bluez 5.53, this always returns 0.
     std::string Address();
     std::string Alias();
     std::string Name();
-    std::map<uint16_t, std::vector<uint8_t>> ManufacturerData();
-    bool Connected();
-    bool ServicesResolved();
+    std::map<uint16_t, std::vector<uint8_t>> ManufacturerData(bool refresh = true);
+    bool Connected(bool refresh = true);
+    bool ServicesResolved(bool refresh = true);
 
     // ----- CALLBACKS -----
     SimpleDBus::Callback<std::function<void()>> OnServicesResolved;

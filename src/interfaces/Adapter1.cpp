@@ -49,8 +49,11 @@ void Adapter1::SetDiscoveryFilter(DiscoveryFilter filter) {
     _conn->send_with_reply_and_block(msg);
 }
 
-bool Adapter1::Discovering() {
-    property_refresh("Discovering");
+bool Adapter1::Discovering(bool refresh) {
+    if (refresh) {
+        property_refresh("Discovering");
+    }
+
     std::scoped_lock lock(_property_update_mutex);
     return _properties["Discovering"].get_boolean();
 }

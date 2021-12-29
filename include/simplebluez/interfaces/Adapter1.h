@@ -21,7 +21,7 @@ class Adapter1 : public SimpleDBus::Interface {
     // void RemoveDevice(SimpleDBus::Holder device); // TODO: Implement
 
     // ----- PROPERTIES -----
-    bool Discovering();
+    bool Discovering(bool refresh = true);
     std::string Address();
 
   protected:
