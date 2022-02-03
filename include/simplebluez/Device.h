@@ -4,6 +4,7 @@
 
 #include <simplebluez/Characteristic.h>
 #include <simplebluez/Service.h>
+#include <simplebluez/interfaces/Battery1.h>
 #include <simplebluez/interfaces/Device1.h>
 
 namespace SimpleBluez {
