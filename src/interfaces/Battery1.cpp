@@ -19,8 +19,5 @@ uint8_t Battery1::Percentage() {
 void Battery1::property_changed(std::string option_name) {
     if (option_name == "Percentage") {
         OnPercentageChanged();
-        std::cout << "Battery1: Percentage property_changed: "
-                  << int(_properties["Percentage"].get_byte())
-                  << std::endl;
     }
 }
