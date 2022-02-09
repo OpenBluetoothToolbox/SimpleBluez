@@ -30,6 +30,10 @@ std::shared_ptr<Device1> Device::device1() {
     return std::dynamic_pointer_cast<Device1>(interface_get("org.bluez.Device1"));
 }
 
+std::shared_ptr<Battery1> Device::battery1() {
+    return std::dynamic_pointer_cast<Battery1>(interface_get("org.bluez.Battery1"));
+}
+
 std::vector<std::shared_ptr<Service>> Device::services() { return children_casted<Service>(); }
 
 std::shared_ptr<Service> Device::get_service(const std::string& uuid) {
@@ -73,3 +77,16 @@ void Device::clear_on_disconnected() { device1()->OnDisconnected.unload(); }
 void Device::set_on_services_resolved(std::function<void()> callback) { device1()->OnServicesResolved.load(callback); }
 
 void Device::clear_on_services_resolved() { device1()->OnServicesResolved.unload(); }
+
+bool Device::has_battery_interface() { return interface_exists("org.bluez.Battery1"); }
+
+uint8_t Device::read_battery_percentage() { return battery1()->Percentage(); }
+
+void Device::set_on_battery_percentage_changed(std::function<void(uint8_t new_value)> callback) {
+    battery1()->OnPercentageChanged.load([this, callback]() { callback(battery1()->Percentage()); });
+    // property_changed signal for percentage only occurs when the value actually changes
+    // -> notify callback at least once (on register), as this might not happen for a long time otherwise
+    battery1()->OnPercentageChanged();
+}
+
+void Device::clear_on_battery_percentage_changed() { battery1()->OnPercentageChanged.unload(); }
