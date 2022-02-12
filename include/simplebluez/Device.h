@@ -42,7 +42,7 @@ class Device : public SimpleDBus::Proxy {
 
     // ----- BATTERY INTERFACE -----
     bool has_battery_interface();
-    uint8_t read_battery_percentage();
+    uint8_t battery_percentage();
     void set_on_battery_percentage_changed(std::function<void(uint8_t new_value)> callback);
     void clear_on_battery_percentage_changed();
 
