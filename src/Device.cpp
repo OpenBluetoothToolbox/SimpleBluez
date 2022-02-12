@@ -17,8 +17,7 @@ std::shared_ptr<SimpleDBus::Proxy> Device::path_create(const std::string& path) 
 std::shared_ptr<SimpleDBus::Interface> Device::interfaces_create(const std::string& interface_name) {
     if (interface_name == "org.bluez.Device1") {
         return std::static_pointer_cast<SimpleDBus::Interface>(std::make_shared<Device1>(_conn, _path));
-    }
-    else if (interface_name == "org.bluez.Battery1") {
+    } else if (interface_name == "org.bluez.Battery1") {
         return std::static_pointer_cast<SimpleDBus::Interface>(std::make_shared<Battery1>(_conn, _path));
     }
 
@@ -84,8 +83,8 @@ uint8_t Device::read_battery_percentage() { return battery1()->Percentage(); }
 
 void Device::set_on_battery_percentage_changed(std::function<void(uint8_t new_value)> callback) {
     battery1()->OnPercentageChanged.load([this, callback]() { callback(battery1()->Percentage()); });
-    // property_changed signal for percentage only occurs when the value actually changes
-    // -> notify callback at least once (on register), as this might not happen for a long time otherwise
+    // As the `property_changed` callback only occurs when the property is changed, we need to manually
+    // call the callback once to make sure the callback is called with the current value.
     battery1()->OnPercentageChanged();
 }
 
