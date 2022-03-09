@@ -15,6 +15,8 @@ class Device1 : public SimpleDBus::Interface {
     // ----- METHODS -----
     void Connect();
     void Disconnect();
+    void Pair();
+    void CancelPairing();
 
     // ----- PROPERTIES -----
     int16_t RSSI();
@@ -23,6 +25,7 @@ class Device1 : public SimpleDBus::Interface {
     std::string Alias();
     std::string Name();
     std::map<uint16_t, std::vector<uint8_t>> ManufacturerData(bool refresh = true);
+    bool Paired();
     bool Connected(bool refresh = true);
     bool ServicesResolved(bool refresh = true);
 
