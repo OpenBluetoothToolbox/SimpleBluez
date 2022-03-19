@@ -1,6 +1,6 @@
 #pragma once
 
-#include <simpledbus/advanced/Callback.h>
+#include <external/kvn_safe_callback.hpp>
 #include <simpledbus/advanced/Interface.h>
 
 #include <string>
@@ -30,8 +30,8 @@ class Device1 : public SimpleDBus::Interface {
     bool ServicesResolved(bool refresh = true);
 
     // ----- CALLBACKS -----
-    SimpleDBus::Callback<std::function<void()>> OnServicesResolved;
-    SimpleDBus::Callback<std::function<void()>> OnDisconnected;
+    kvn::safe_callback<void()> OnServicesResolved;
+    kvn::safe_callback<void()> OnDisconnected;
 
   protected:
     void property_changed(std::string option_name) override;
