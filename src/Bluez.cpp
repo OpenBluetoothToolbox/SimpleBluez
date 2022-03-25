@@ -32,7 +32,6 @@ void Bluez::init() {
     // Create the agent that will handle pairing.
     _agent = std::make_shared<Agent>(_conn, "org.bluez", "/agent");
     path_append_child("/agent", std::static_pointer_cast<SimpleDBus::Proxy>(_agent));
-    std::dynamic_pointer_cast<ProxyOrg>(path_get("/org"))->register_agent(_agent);
 }
 
 void Bluez::run_async() {
@@ -48,9 +47,9 @@ std::vector<std::shared_ptr<Adapter>> Bluez::get_adapters() {
     return std::dynamic_pointer_cast<ProxyOrg>(path_get("/org"))->get_adapters();
 }
 
-std::shared_ptr<Agent> Bluez::get_agent() {
-    return std::dynamic_pointer_cast<Agent>(path_get("/agent"));
-}
+std::shared_ptr<Agent> Bluez::get_agent() { return std::dynamic_pointer_cast<Agent>(path_get("/agent")); }
+
+void Bluez::register_agent() { std::dynamic_pointer_cast<ProxyOrg>(path_get("/org"))->register_agent(_agent); }
 
 std::shared_ptr<SimpleDBus::Proxy> Bluez::path_create(const std::string& path) {
     auto child = std::make_shared<ProxyOrg>(_conn, _bus_name, path);

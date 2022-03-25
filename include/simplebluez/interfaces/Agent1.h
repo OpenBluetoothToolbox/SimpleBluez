@@ -56,9 +56,6 @@ class Agent1 : public SimpleDBus::Interface {
      *        needs to display a passkey for an authentication.
      *        The entered parameter indicates the number of already
      *        typed keys on the remote side.
-     * 
-     * @note: Invalid values will cause a rejection of the request
-     *        be returned.
      */
     kvn::safe_callback<void(uint32_t, uint16_t)> OnDisplayPasskey;
 
@@ -90,9 +87,9 @@ class Agent1 : public SimpleDBus::Interface {
     kvn::safe_callback<bool(const std::string&)> OnAuthorizeService;
 
   protected:
-    void message_handle(SimpleDBus::Message msg) override;
+    void message_handle(SimpleDBus::Message &msg) override;
 
-    void reply_error(SimpleDBus::Message msg, const std::string& error_name, const std::string& error_message);
+    void reply_error(SimpleDBus::Message &msg, const std::string& error_name, const std::string& error_message);
 };
 
 }  // namespace SimpleBluez

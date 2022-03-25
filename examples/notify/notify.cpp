@@ -24,6 +24,14 @@ void millisecond_delay(int ms) {
     }
 }
 
+void print_byte_array(SimpleBluez::ByteArray& bytes) {
+    for (auto byte : bytes) {
+        std::cout << std::hex << std::setfill('0') << (uint32_t)((uint8_t)byte) << " ";
+        break;
+    }
+    std::cout << std::endl;
+}
+
 std::vector<std::shared_ptr<SimpleBluez::Device>> peripherals;
 
 int main(int argc, char* argv[]) {
@@ -31,46 +39,6 @@ int main(int argc, char* argv[]) {
 
     bluez.init();
     std::thread* async_thread = new std::thread(async_thread_function);
-
-    auto agent = bluez.get_agent();
-    agent->set_capabilities(SimpleBluez::Agent::Capabilities::KeyboardDisplay);
-
-    // Configure all callback handlers for the agent, as part of this example.
-    agent->set_on_request_pin_code([&]() {
-        std::cout << "Agent::RequestPinCode" << std::endl;
-        return "123456";
-    });
-
-    agent->set_on_display_pin_code([&](const std::string& pin_code) {
-        std::cout << "Agent::DisplayPinCode: " << pin_code << std::endl;
-        return true;
-    });
-
-    agent->set_on_request_passkey([&]() {
-        std::cout << "Agent::RequestPasskey" << std::endl;
-        return 123456;
-    });
-
-    agent->set_on_display_passkey([&](uint32_t passkey, uint16_t entered) {
-        std::cout << "Agent::DisplayPasskey: " << passkey << " (" << entered << " entered)" << std::endl;
-    });
-
-    agent->set_on_request_confirmation([&](uint32_t passkey) {
-        std::cout << "Agent::RequestConfirmation: " << passkey << std::endl;
-        return true;
-    });
-
-    agent->set_on_request_authorization([&]() {
-        std::cout << "Agent::RequestAuthorization" << std::endl;
-        return true;
-    });
-
-    agent->set_on_authorize_service([&](const std::string& uuid) {
-        std::cout << "Agent::AuthorizeService: " << uuid << std::endl;
-        return true;
-    });
-
-    bluez.register_agent();
 
     auto adapters = bluez.get_adapters();
     std::cout << "Available adapters:" << std::endl;
@@ -108,16 +76,16 @@ int main(int argc, char* argv[]) {
                   << std::endl;
     }
 
-    std::cout << "Please select a device to pair to: ";
+    std::cout << "Please select a device to connect to: ";
     std::cin >> selection;
 
     if (selection >= 0 && selection < peripherals.size()) {
         auto peripheral = peripherals[selection];
-        std::cout << "Pairing to " << peripheral->name() << " [" << peripheral->address() << "]" << std::endl;
+        std::cout << "Connecting to " << peripheral->name() << " [" << peripheral->address() << "]" << std::endl;
 
         for (int attempt = 0; attempt < 3; attempt++) {
             try {
-                peripheral->pair();
+                peripheral->connect();
             } catch (SimpleDBus::Exception::SendFailed& e) {
                 millisecond_delay(100);
             }
@@ -129,13 +97,34 @@ int main(int argc, char* argv[]) {
             return 1;
         }
 
-        std::cout << "Successfully connected, listing services." << std::endl;
+        // Store all services and characteristics in a vector.
+        std::vector<std::pair<std::shared_ptr<SimpleBluez::Service>, std::shared_ptr<SimpleBluez::Characteristic>>>
+            char_list;
         for (auto service : peripheral->services()) {
-            std::cout << "Service: " << service->uuid() << std::endl;
             for (auto characteristic : service->characteristics()) {
-                std::cout << "  Characteristic: " << characteristic->uuid() << std::endl;
+                char_list.push_back(std::make_pair(service, characteristic));
             }
         }
+
+        std::cout << "The following services and characteristics were found:" << std::endl;
+        for (int i = 0; i < char_list.size(); i++) {
+            std::cout << "[" << i << "] " << char_list[i].first->uuid() << " " << char_list[i].second->uuid()
+                      << std::endl;
+        }
+
+        std::cout << "Please select a characteristic to read: ";
+        std::cin >> selection;
+
+        if (selection >= 0 && selection < char_list.size()) {
+            auto characteristic = char_list[selection].second;
+            characteristic->set_on_value_changed(
+                [&](SimpleBluez::ByteArray new_value) { print_byte_array(new_value); });
+
+            characteristic->start_notify();
+            millisecond_delay(5000);
+            characteristic->stop_notify();
+        }
+
         peripheral->disconnect();
 
         // Sleep for an additional second before returning.

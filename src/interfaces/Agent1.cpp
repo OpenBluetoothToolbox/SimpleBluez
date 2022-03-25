@@ -2,12 +2,10 @@
 
 using namespace SimpleBluez;
 
-#include <iostream>
-
 Agent1::Agent1(std::shared_ptr<SimpleDBus::Connection> conn, std::string path)
     : SimpleDBus::Interface(conn, "org.bluez", path, "org.bluez.Agent1") {}
 
-void Agent1::message_handle(SimpleDBus::Message msg) {
+void Agent1::message_handle(SimpleDBus::Message &msg) {
     if (msg.get_type() == SimpleDBus::Message::Type::METHOD_CALL) {
         // To minimize the amount of repeated code, create a method return object that will be
         // used to send the reply.
@@ -58,7 +56,7 @@ void Agent1::message_handle(SimpleDBus::Message msg) {
             }
 
             if (!success) {
-                reply_error(msg, "org.bluez.Error.Rejected", "User rejected the request");                
+                reply_error(msg, "org.bluez.Error.Rejected", "User rejected the request");
                 return;
             }
 
@@ -123,14 +121,14 @@ void Agent1::message_handle(SimpleDBus::Message msg) {
             //       have any real impact on any of the callbacks, and thus will be ignored.
 
         } else {
-            std::cout << "Agent1::message_handle() Unknown method: " << msg.get_member() << std::endl;
+            // std::cout << "Agent1::message_handle() Unknown method: " << msg.get_member() << std::endl;
         }
 
         _conn->send(reply);
     }
 }
 
-void Agent1::reply_error(SimpleDBus::Message msg, const std::string& error_name, const std::string& error_message) {
+void Agent1::reply_error(SimpleDBus::Message &msg, const std::string& error_name, const std::string& error_message) {
     SimpleDBus::Message reply = SimpleDBus::Message::create_error(msg, error_name, error_message);
     _conn->send(reply);
 }
