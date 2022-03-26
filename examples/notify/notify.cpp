@@ -14,7 +14,7 @@ std::atomic_bool async_thread_active = true;
 void async_thread_function() {
     while (async_thread_active) {
         bluez.run_async();
-        std::this_thread::sleep_for(std::chrono::microseconds(10));
+        std::this_thread::sleep_for(std::chrono::microseconds(100));
     }
 }
 
@@ -60,10 +60,6 @@ int main(int argc, char* argv[]) {
     adapter->discovery_filter(SimpleBluez::Adapter::DiscoveryFilter::LE);
 
     adapter->set_on_device_updated([](std::shared_ptr<SimpleBluez::Device> device) {
-        if (device->name() == "") {
-            return;
-        }
-
         if (std::find(peripherals.begin(), peripherals.end(), device) == peripherals.end()) {
             std::cout << "Found device: " << device->name() << " [" << device->address() << "]" << std::endl;
             peripherals.push_back(device);
@@ -101,22 +97,33 @@ int main(int argc, char* argv[]) {
             return 1;
         }
 
-        std::cout << "Successfully connected, testing NUS service." << std::endl;
+        // Store all services and characteristics in a vector.
+        std::vector<std::pair<std::shared_ptr<SimpleBluez::Service>, std::shared_ptr<SimpleBluez::Characteristic>>>
+            char_list;
+        for (auto service : peripheral->services()) {
+            for (auto characteristic : service->characteristics()) {
+                char_list.push_back(std::make_pair(service, characteristic));
+            }
+        }
 
-        auto characteristic_rx = peripheral->get_characteristic("6e400001-b5a3-f393-e0a9-e50e24dcca9e",
-                                                                "6e400002-b5a3-f393-e0a9-e50e24dcca9e");
+        std::cout << "The following services and characteristics were found:" << std::endl;
+        for (int i = 0; i < char_list.size(); i++) {
+            std::cout << "[" << i << "] " << char_list[i].first->uuid() << " " << char_list[i].second->uuid()
+                      << std::endl;
+        }
 
-        characteristic_rx->write_command("Hello World");
+        std::cout << "Please select a characteristic to read: ";
+        std::cin >> selection;
 
-        auto characteristic_tx = peripheral->get_characteristic("6e400001-b5a3-f393-e0a9-e50e24dcca9e",
-                                                                "6e400003-b5a3-f393-e0a9-e50e24dcca9e");
+        if (selection >= 0 && selection < char_list.size()) {
+            auto characteristic = char_list[selection].second;
+            characteristic->set_on_value_changed(
+                [&](SimpleBluez::ByteArray new_value) { print_byte_array(new_value); });
 
-        characteristic_tx->set_on_value_changed([&](SimpleBluez::ByteArray new_value) { print_byte_array(new_value); });
-
-        characteristic_tx->start_notify();
-        millisecond_delay(3000);
-        characteristic_tx->stop_notify();
-        millisecond_delay(1000);
+            characteristic->start_notify();
+            millisecond_delay(5000);
+            characteristic->stop_notify();
+        }
 
         peripheral->disconnect();
 
