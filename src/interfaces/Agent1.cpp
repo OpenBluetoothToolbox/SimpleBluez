@@ -5,7 +5,7 @@ using namespace SimpleBluez;
 Agent1::Agent1(std::shared_ptr<SimpleDBus::Connection> conn, std::string path)
     : SimpleDBus::Interface(conn, "org.bluez", path, "org.bluez.Agent1") {}
 
-void Agent1::message_handle(SimpleDBus::Message &msg) {
+void Agent1::message_handle(SimpleDBus::Message& msg) {
     if (msg.get_type() == SimpleDBus::Message::Type::METHOD_CALL) {
         // To minimize the amount of repeated code, create a method return object that will be
         // used to send the reply.
@@ -128,7 +128,7 @@ void Agent1::message_handle(SimpleDBus::Message &msg) {
     }
 }
 
-void Agent1::reply_error(SimpleDBus::Message &msg, const std::string& error_name, const std::string& error_message) {
+void Agent1::reply_error(SimpleDBus::Message& msg, const std::string& error_name, const std::string& error_message) {
     SimpleDBus::Message reply = SimpleDBus::Message::create_error(msg, error_name, error_message);
     _conn->send(reply);
 }
