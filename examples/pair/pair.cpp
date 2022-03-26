@@ -117,13 +117,29 @@ int main(int argc, char* argv[]) {
 
         for (int attempt = 0; attempt < 3; attempt++) {
             try {
-                peripheral->pair();
+                peripheral->connect();
+
+                // At this point, the connection will be established,
+                // but services might not be resolved yet
+
+                for (int i = 0; i < 10; i++) {
+                    std::cout << "Waiting for services to resolve..." << std::endl;
+                    millisecond_delay(100);
+                    if (peripheral->services_resolved()) {
+                        break;
+                    }
+                }
+
+                if (peripheral->connected() && peripheral->services_resolved()) {
+                    break;
+                }
+
             } catch (SimpleDBus::Exception::SendFailed& e) {
                 millisecond_delay(100);
             }
         }
 
-        if (!peripheral->connected() && !peripheral->services_resolved()) {
+        if (!peripheral->connected() || !peripheral->services_resolved()) {
             std::cout << "Failed to connect to " << peripheral->name() << " [" << peripheral->address() << "]"
                       << std::endl;
             return 1;
@@ -136,7 +152,13 @@ int main(int argc, char* argv[]) {
                 std::cout << "  Characteristic: " << characteristic->uuid() << std::endl;
             }
         }
+
+        millisecond_delay(2000);
         peripheral->disconnect();
+
+        if (peripheral->paired()) {
+            adapter->device_remove(peripheral->path());
+        }
 
         // Sleep for an additional second before returning.
         // If there are any unexpected events, this example will help debug them.
