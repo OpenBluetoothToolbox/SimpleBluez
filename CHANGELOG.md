@@ -7,7 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.3.0] - 2022-03-25
 
 ### Added
- - Agent and AgentManager classes to handle pairing.
+- Agent and AgentManager classes to handle pairing.
+- Pair and Notify examples.
+
+### Changed
+- Migrated to using safe callbacks from external vendor (kvn::safe_callback).
 
 ## [0.2.1] - 2022-02-13
 
