@@ -50,7 +50,7 @@ void Agent1::message_handle(SimpleDBus::Message& msg) {
             SimpleDBus::Holder arg_device = msg.extract();
             SimpleDBus::Holder arg_pin_code = msg.extract();
 
-            bool success = false;
+            bool success = true;
             if (OnDisplayPinCode) {
                 success = OnDisplayPinCode(arg_pin_code.get_string());
             }
@@ -75,7 +75,7 @@ void Agent1::message_handle(SimpleDBus::Message& msg) {
             SimpleDBus::Holder arg_device = msg.extract();
             SimpleDBus::Holder arg_passkey = msg.extract();
 
-            bool success = false;
+            bool success = true;
             if (OnRequestConfirmation) {
                 success = OnRequestConfirmation(arg_passkey.get_uint32());
             }
@@ -89,7 +89,7 @@ void Agent1::message_handle(SimpleDBus::Message& msg) {
             // std::cout << "Agent1::message_handle() RequestAuthorization" << std::endl;
             SimpleDBus::Holder arg_device = msg.extract();
 
-            bool success = false;
+            bool success = true;
             if (OnRequestAuthorization) {
                 success = OnRequestAuthorization();
             }
@@ -105,7 +105,7 @@ void Agent1::message_handle(SimpleDBus::Message& msg) {
             SimpleDBus::Holder arg_device = msg.extract();
             SimpleDBus::Holder arg_uuid = msg.extract();
 
-            bool success = false;
+            bool success = true;
             if (OnAuthorizeService) {
                 success = OnAuthorizeService(arg_uuid.get_string());
             }
