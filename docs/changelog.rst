@@ -6,6 +6,14 @@ All notable changes to this project will be documented in this file.
 The format is based on `Keep a Changelog`_, and this project adheres to
 `Semantic Versioning`_.
 
+[0.4.0] - 2022-04-07
+--------------------
+
+**Added**
+
+*  ``RSSI`` property to ``Device`` class.
+*  Adapters can now return a list of all paired devices.
+
 [0.3.1] - 2022-04-02
 --------------------
 
@@ -19,7 +27,7 @@ The format is based on `Keep a Changelog`_, and this project adheres to
 
 **Added**
 
-*  Agent and AgentManager classes to handle pairing.
+*  ``Agent`` and ``AgentManager`` classes to handle pairing.
 *  Pair and Notify examples.
 
 **Changed**
