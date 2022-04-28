@@ -1,7 +1,11 @@
 cmake_minimum_required(VERSION 3.16.0)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/find")
 
 project(SimpleBluez VERSION 0.1 LANGUAGES CXX)
+
+option(LIBFMT_VENDORIZE "Enable vendorized libfmt" ON)
+option(SIMPLEDBUS_VENDORIZE "Enable vendorized SimpleDBus" ON)
 
 # Include all necessary CMake modules
 include(FetchContent)
@@ -21,59 +25,12 @@ else()
     set(STANDALONE false)
 endif()
 
-# Append additional flags for address and thread sanitization
-if(SIMPLEBLUEZ_SANITIZE MATCHES "Address")
-    set(SIMPLEDBUS_SANITIZE ${SIMPLEBLUEZ_SANITIZE})
-    set(EXTRA_COMPILE_OPTIONS ${EXTRA_COMPILE_OPTIONS} -fsanitize=address -fsanitize-recover=address -fno-omit-frame-pointer -fno-common -g)
-    set(EXTRA_LINK_OPTIONS ${EXTRA_LINK_OPTIONS} -fsanitize=address)
-endif()
+set(SIMPLEDBUS_SANITIZE ${SIMPLEBLUEZ_SANITIZE})
+find_package(simpledbus REQUIRED)
+find_package(fmt REQUIRED)
 
-if(SIMPLEBLUEZ_SANITIZE MATCHES "Thread")
-    set(SIMPLEDBUS_SANITIZE ${SIMPLEBLUEZ_SANITIZE})
-    set(EXTRA_COMPILE_OPTIONS ${EXTRA_COMPILE_OPTIONS} -fsanitize=thread -fno-omit-frame-pointer -fno-common -g)
-    set(EXTRA_LINK_OPTIONS ${EXTRA_LINK_OPTIONS} -fsanitize=thread)
-endif()
-
-# Load default parameters passed in through the command line.
-if(NOT SIMPLEDBUS_GIT_REPOSITORY)
-    set(SIMPLEDBUS_GIT_REPOSITORY "https://github.com/OpenBluetoothToolbox/SimpleDBus.git")
-endif()
-if(NOT SIMPLEDBUS_GIT_TAG)
-    set(SIMPLEDBUS_GIT_TAG "v2.1.0")
-endif()
-
-if(NOT SIMPLEDBUS_LOCAL_PATH)
-    # Library includes
-    FetchContent_Declare(
-        simpledbus
-        GIT_REPOSITORY ${SIMPLEDBUS_GIT_REPOSITORY}
-        GIT_TAG ${SIMPLEDBUS_GIT_TAG}
-    )
-    FetchContent_MakeAvailable(simpledbus)
-else()
-    message("-- [INFO] Using local SimpleDBus")
-    add_subdirectory(${SIMPLEDBUS_LOCAL_PATH} ${CMAKE_CURRENT_BINARY_DIR}/simpledbus)
-endif()
-
-# Load default parameters passed in through the command line.
-if(NOT LIBFMT_GIT_REPOSITORY)
-    set(LIBFMT_GIT_REPOSITORY "https://github.com/fmtlib/fmt.git")
-endif()
-if(NOT LIBFMT_GIT_TAG)
-    set(LIBFMT_GIT_TAG "d141cdbeb0fb422a3fb7173b285fd38e0d1772dc") # v8.0.1
-endif()
-
-if(NOT LIBFMT_LOCAL_PATH)
-    # Library includes
-    FetchContent_Declare(
-        fmt
-        GIT_REPOSITORY ${LIBFMT_GIT_REPOSITORY}
-        GIT_TAG ${LIBFMT_GIT_TAG}
-    )
-    FetchContent_MakeAvailable(fmt)
-else()
-    message("-- [INFO] Using local LibFmt")
-    add_subdirectory(${LIBFMT_LOCAL_PATH} ${CMAKE_CURRENT_BINARY_DIR}/libfmt)
+if(NOT SIMPLEBLUEZ_LOG_LEVEL)
+    set(SIMPLEBLUEZ_LOG_LEVEL "FATAL")
 endif()
 
 include_directories(${SIMPLEDBUS_INCLUDES})
@@ -81,11 +38,23 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/legacy)
 
-message("-- [INFO] Building SimpleBluez")
+message(STATUS "Building SimpleBluez")
 file(GLOB_RECURSE SRC_simplebluez_FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 
 add_library(simplebluez-static STATIC ${SRC_simplebluez_FILES})
 add_library(simplebluez SHARED ${SRC_simplebluez_FILES})
+
+target_compile_definitions(simplebluez-static PRIVATE SIMPLEBLUEZ_LOG_LEVEL=${SIMPLEBLUEZ_LOG_LEVEL})
+target_compile_definitions(simplebluez PRIVATE SIMPLEBLUEZ_LOG_LEVEL=${SIMPLEBLUEZ_LOG_LEVEL})
+
+# Append additional flags for address and thread sanitization
+if(SIMPLEBLUEZ_SANITIZE MATCHES "Address")
+    set(EXTRA_COMPILE_OPTIONS ${EXTRA_COMPILE_OPTIONS} -fsanitize=address -fsanitize-recover=address -fno-omit-frame-pointer -fno-common -g)
+    set(EXTRA_LINK_OPTIONS ${EXTRA_LINK_OPTIONS} -fsanitize=address)
+elseif(SIMPLEBLUEZ_SANITIZE MATCHES "Thread")
+    set(EXTRA_COMPILE_OPTIONS ${EXTRA_COMPILE_OPTIONS} -fsanitize=thread -fno-omit-frame-pointer -fno-common -g)
+    set(EXTRA_LINK_OPTIONS ${EXTRA_LINK_OPTIONS} -fsanitize=thread)
+endif()
 
 target_compile_options(simplebluez-static PRIVATE -std=c++17 -fPIC -Wfatal-errors -Wpedantic -O3 -Og ${EXTRA_COMPILE_OPTIONS})
 target_compile_options(simplebluez PRIVATE -std=c++17 -fPIC -Wfatal-errors -Wpedantic -O3 -Og ${EXTRA_COMPILE_OPTIONS})

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <external/kvn_safe_callback.hpp>
 #include <simpledbus/advanced/Interface.h>
+#include <simpledbus/external/kvn_safe_callback.hpp>
 
 #include <cstdint>
 #include <string>
@@ -45,7 +45,7 @@ class Agent1 : public SimpleDBus::Interface {
      *        needs to get the passkey for an authentication.
      *        The return value should be a numeric value
      *        between 0 and 999999.
-     * 
+     *
      * @note: Invalid values will cause a rejection of the request
      *        be returned.
      */
@@ -62,7 +62,7 @@ class Agent1 : public SimpleDBus::Interface {
     /**
      * @brief This method gets called when the service daemon
      *        needs to confirm a passkey for an authentication.
-     * 
+     *
      * @return false if the request should be rejected.
      */
     kvn::safe_callback<bool(uint32_t)> OnRequestConfirmation;
@@ -71,9 +71,9 @@ class Agent1 : public SimpleDBus::Interface {
      * @brief This method gets called to request the user to
      *        authorize an incoming pairing attempt which
      *        would in other circumstances trigger the just-works
-     *        model, or when the user plugged in a device that 
+     *        model, or when the user plugged in a device that
      *        implements cable pairing.
-     * 
+     *
      * @return false if the request should be rejected.
      */
     kvn::safe_callback<bool()> OnRequestAuthorization;
@@ -81,15 +81,15 @@ class Agent1 : public SimpleDBus::Interface {
     /**
      * @brief This method gets called when the service daemon
      *        needs to authorize a connection/service request.
-     * 
+     *
      * @return false if the request should be rejected.
      */
     kvn::safe_callback<bool(const std::string&)> OnAuthorizeService;
 
   protected:
-    void message_handle(SimpleDBus::Message &msg) override;
+    void message_handle(SimpleDBus::Message& msg) override;
 
-    void reply_error(SimpleDBus::Message &msg, const std::string& error_name, const std::string& error_message);
+    void reply_error(SimpleDBus::Message& msg, const std::string& error_name, const std::string& error_message);
 };
 
 }  // namespace SimpleBluez

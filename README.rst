@@ -25,14 +25,8 @@ Vendorization
 -------------
 If you are interested in using SimpleBluez as a dependency in your project,
 there is currently first-class support for vendorization of all 3rd-party
-dependencies. Currently, the following libraries are included as part of
-SimpleBluez:
-
-* `fmtlib`_
-* `SimpleDBus`_
-
-Please visit our **Security** page for more information on how to vendorize
-3rd-party libraries for SimpleBluez.
+dependencies. Please visit our **Security** page for more information on 
+how to vendorize 3rd-party libraries for SimpleBluez.
 
 License
 -------
@@ -46,15 +40,11 @@ external creators, are licensed under the terms of the `MIT Licence`_.
 
 .. _Bluez: https://git.kernel.org/pub/scm/bluetooth/bluez.git/plain/doc/
 
-.. _fmtlib: https://github.com/fmtlib/fmt
-
 .. _Discord: https://discord.gg/N9HqNEcvP3
 
 .. _ReadTheDocs: https://simplebluez.readthedocs.io/en/latest/
 
 .. _SimpleBluez: https://github.com/OpenBluetoothToolbox/SimpleBluez
-
-.. _SimpleDBus: https://github.com/OpenBluetoothToolbox/SimpleDBus
 
 .. |Latest Documentation Status| image:: https://readthedocs.org/projects/simplebluez/badge?version=latest
    :target: http://simplebluez.readthedocs.org/en/latest
