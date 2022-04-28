@@ -44,6 +44,8 @@ external creators, are licensed under the terms of the `MIT Licence`_.
 
 .. _ReadTheDocs: https://simplebluez.readthedocs.io/en/latest/
 
+.. _SimpleDBus: https://github.com/OpenBluetoothToolbox/SimpleDBus
+
 .. _SimpleBluez: https://github.com/OpenBluetoothToolbox/SimpleBluez
 
 .. |Latest Documentation Status| image:: https://readthedocs.org/projects/simplebluez/badge?version=latest
