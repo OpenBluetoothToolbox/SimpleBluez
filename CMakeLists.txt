@@ -38,7 +38,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/legacy)
 
-message(STATUS "Building SimpleBluez")
+message(STATUS "Configuring SimpleBluez")
 file(GLOB_RECURSE SRC_simplebluez_FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
 
 add_library(simplebluez-static STATIC ${SRC_simplebluez_FILES})
