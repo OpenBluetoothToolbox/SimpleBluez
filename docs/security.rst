@@ -7,7 +7,7 @@ from internal or secure sources without the risk of those getting compromised.
 
 Vendorization
 -------------
-Currently, the following libraries are included as part of SimpleDBus, with 
+Currently, the following libraries are included as part of SimpleBluez, with 
 the following CMake options available:
 
 * `fmtlib`_
