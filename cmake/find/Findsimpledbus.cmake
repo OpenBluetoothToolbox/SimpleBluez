@@ -11,7 +11,6 @@ if (SIMPLEDBUS_VENDORIZE)
     endif()
 
     if(NOT SIMPLEDBUS_LOCAL_PATH)
-        message(STATUS "Using remote SimpleDBus")    
         FetchContent_Declare(
             simpledbus
             GIT_REPOSITORY ${SIMPLEDBUS_GIT_REPOSITORY}
@@ -31,7 +30,6 @@ if (SIMPLEDBUS_VENDORIZE)
         endif()
 
     else()
-        message(STATUS "Using local SimpleDBus")
         list(APPEND CMAKE_MODULE_PATH "${SIMPLEDBUS_LOCAL_PATH}/cmake/find")
         add_subdirectory(${SIMPLEDBUS_LOCAL_PATH} ${CMAKE_CURRENT_BINARY_DIR}/simpledbus)
     endif()
