@@ -4,6 +4,11 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/find")
 
 project(SimpleBluez VERSION 0.1 LANGUAGES CXX)
 
+if (CONAN_BUILD)
+    include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+    conan_basic_setup()
+endif()
+
 option(LIBFMT_VENDORIZE "Enable vendorized libfmt" ON)
 option(SIMPLEDBUS_VENDORIZE "Enable vendorized SimpleDBus" ON)
 
@@ -64,6 +69,10 @@ target_link_libraries(simplebluez PUBLIC simpledbus-static pthread ${EXTRA_LINK_
 
 target_link_libraries(simplebluez-static PRIVATE fmt::fmt-header-only)
 target_link_libraries(simplebluez PRIVATE fmt::fmt-header-only)
+
+if (CONAN_BUILD)
+    add_subdirectory(examples)
+endif()
 
 # Export the variables needed by the parent project
 if(NOT ${STANDALONE})

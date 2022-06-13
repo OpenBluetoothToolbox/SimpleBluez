@@ -12,10 +12,12 @@ file(WRITE ${CMAKE_BINARY_DIR}/.gitignore "*")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# Include simplebluez
-# Build artifacts in a separate folder
-add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/.. ${CMAKE_BINARY_DIR}/simplebluez)
-include_directories(${SIMPLEBLUEZ_INCLUDES})
+if (NOT CONAN_BUILD)
+    # Include simplebluez
+    # Build artifacts in a separate folder
+    add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/.. ${CMAKE_BINARY_DIR}/simplebluez)
+    include_directories(${SIMPLEBLUEZ_INCLUDES})
+endif()
 
 add_subdirectory(list_adapters)
 add_subdirectory(list_paired)
