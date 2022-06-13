@@ -7,7 +7,7 @@ if (SIMPLEDBUS_VENDORIZE)
         set(SIMPLEDBUS_GIT_REPOSITORY "https://github.com/OpenBluetoothToolbox/SimpleDBus.git")
     endif()
     if(NOT SIMPLEDBUS_GIT_TAG)
-        set(SIMPLEDBUS_GIT_TAG "debug/release") # TODO: Switch to the latest SimpleDBus release once done.
+        set(SIMPLEDBUS_GIT_TAG "v2.2.0")
     endif()
 
     if(NOT SIMPLEDBUS_LOCAL_PATH)
