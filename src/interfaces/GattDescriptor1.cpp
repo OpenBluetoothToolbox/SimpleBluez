@@ -61,7 +61,7 @@ void GattDescriptor1::update_value(SimpleDBus::Holder& new_value) {
     auto value_array = new_value.get_array();
 
     char* value_data = new char[value_array.size()];
-    for (unsigned int i = 0; i < value_array.size(); i++) {
+    for (std::size_t i = 0; i < value_array.size(); i++) {
         value_data[i] = value_array[i].get_byte();
     }
     _value = ByteArray(value_data, value_array.size());

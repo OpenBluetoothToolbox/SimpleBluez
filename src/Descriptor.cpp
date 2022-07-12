@@ -3,7 +3,7 @@
 using namespace SimpleBluez;
 
 Descriptor::Descriptor(std::shared_ptr<SimpleDBus::Connection> conn, const std::string& bus_name,
-                               const std::string& path)
+                       const std::string& path)
     : Proxy(conn, bus_name, path) {}
 
 Descriptor::~Descriptor() {}
@@ -27,9 +27,7 @@ ByteArray Descriptor::value() { return gattdescriptor1()->Value(); }
 
 ByteArray Descriptor::read() { return gattdescriptor1()->ReadValue(); }
 
-void Descriptor::write(ByteArray value) {
-    gattdescriptor1()->WriteValue(value);
-}
+void Descriptor::write(ByteArray value) { gattdescriptor1()->WriteValue(value); }
 
 void Descriptor::set_on_value_changed(std::function<void(ByteArray new_value)> callback) {
     gattdescriptor1()->OnValueChanged.load([this, callback]() { callback(gattdescriptor1()->Value()); });

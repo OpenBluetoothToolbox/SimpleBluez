@@ -6,6 +6,18 @@ All notable changes to this project will be documented in this file.
 The format is based on `Keep a Changelog`_, and this project adheres to
 `Semantic Versioning`_.
 
+[0.6.0] - 2022-XX-XX
+--------------------
+
+**Added**
+
+*  Support for characteristic descriptors. *(Thanks Symbitic!)*
+
+**Changed**
+
+*
+
+
 [0.5.0] - 2022-06-12
 --------------------
 
@@ -15,7 +27,7 @@ The format is based on `Keep a Changelog`_, and this project adheres to
 
 **Changed**
 
-*  Updated libfmt to version 8.1.1. 
+*  Updated libfmt to version 8.1.1.
 *  Cleaned up dependency management for libfmt and SimpleDBus.
 
 
