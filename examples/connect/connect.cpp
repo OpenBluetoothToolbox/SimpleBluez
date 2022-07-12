@@ -94,6 +94,9 @@ int main(int argc, char* argv[]) {
             std::cout << "Service: " << service->uuid() << std::endl;
             for (auto characteristic : service->characteristics()) {
                 std::cout << "  Characteristic: " << characteristic->uuid() << std::endl;
+                for (auto descriptor : characteristic->descriptors()) {
+                    std::cout << "    Descriptor: " << descriptor->uuid() << std::endl;
+                }
             }
         }
         peripheral->disconnect();
