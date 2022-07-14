@@ -15,7 +15,11 @@ The format is based on `Keep a Changelog`_, and this project adheres to
 
 **Changed**
 
-*
+*  Selection of build type is now based on the  ``BUILD_SHARED_LIBS`` setting.
+
+**Removed**
+
+*  CMake target ``simplebluez-static`` was removed in favour of ``BUILD_SHARED_LIBS``.
 
 
 [0.5.0] - 2022-06-12
