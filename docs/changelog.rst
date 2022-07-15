@@ -9,6 +9,9 @@ The format is based on `Keep a Changelog`_, and this project adheres to
 [0.6.0] - 2022-XX-XX
 --------------------
 
+**Important:** From this version onwards, the CMake target that should be consumed
+               by downstream projects is ``simplebluez::simplebluez``.
+
 **Added**
 
 *  Support for characteristic descriptors. *(Thanks Symbitic!)*
@@ -16,6 +19,7 @@ The format is based on `Keep a Changelog`_, and this project adheres to
 **Changed**
 
 *  Selection of build type is now based on the  ``BUILD_SHARED_LIBS`` setting.
+*  Consumable CMake target is now ``simplebluez::simplebluez``.
 
 **Removed**
 
