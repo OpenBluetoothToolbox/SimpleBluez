@@ -23,7 +23,7 @@ set(
 )
 
 add_executable(simplebluez_test ${SRC_FILES})
-target_link_libraries(simplebluez_test simplebluez-static ${GTEST_LIBRARIES} ${Python3_LIBRARIES})
+target_link_libraries(simplebluez_test simplebluez ${GTEST_LIBRARIES} ${Python3_LIBRARIES})
 target_include_directories(simplebluez_test PRIVATE ${GTEST_INCLUDE_DIRS} ${Python3_INCLUDE_DIRS})
 
 add_custom_command (TARGET simplebluez_test POST_BUILD
