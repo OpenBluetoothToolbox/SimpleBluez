@@ -14,16 +14,19 @@ The format is based on `Keep a Changelog`_, and this project adheres to
 
 **Added**
 
-*  Support for characteristic descriptors. *(Thanks Symbitic!)*
+-  Support for characteristic descriptors. *(Thanks Symbitic!)*
 
 **Changed**
 
-*  Selection of build type is now based on the  ``BUILD_SHARED_LIBS`` setting.
-*  Consumable CMake target is now ``simplebluez::simplebluez``.
+-  Selection of build type is now based on the  ``BUILD_SHARED_LIBS`` setting.
+-  Consumable CMake target is now ``simplebluez::simplebluez``.
 
 **Removed**
 
-*  CMake target ``simplebluez-static`` was removed in favour of ``BUILD_SHARED_LIBS``.
+-  CMake target ``simplebluez-static`` was removed in favour of ``BUILD_SHARED_LIBS``.
+
+**Fixed**
+-  Accessing the ``Paired`` property of ``Device1`` would only use the cached value.
 
 
 [0.5.0] - 2022-06-12
@@ -31,12 +34,12 @@ The format is based on `Keep a Changelog`_, and this project adheres to
 
 **Added**
 
-*  Log forwarding based on ``logfwd``.
+-  Log forwarding based on ``logfwd``.
 
 **Changed**
 
-*  Updated libfmt to version 8.1.1.
-*  Cleaned up dependency management for libfmt and SimpleDBus.
+-  Updated libfmt to version 8.1.1.
+-  Cleaned up dependency management for libfmt and SimpleDBus.
 
 
 [0.4.0] - 2022-04-07
@@ -44,8 +47,8 @@ The format is based on `Keep a Changelog`_, and this project adheres to
 
 **Added**
 
-*  ``RSSI`` property to ``Device`` class.
-*  Adapters can now return a list of all paired devices.
+-  ``RSSI`` property to ``Device`` class.
+-  Adapters can now return a list of all paired devices.
 
 
 [0.3.1] - 2022-04-02
@@ -53,7 +56,7 @@ The format is based on `Keep a Changelog`_, and this project adheres to
 
 **Changed**
 
-*  By default, all pairing options will succeed.
+-  By default, all pairing options will succeed.
 
 
 [0.3.0] - 2022-03-25
@@ -61,12 +64,12 @@ The format is based on `Keep a Changelog`_, and this project adheres to
 
 **Added**
 
-*  ``Agent`` and ``AgentManager`` classes to handle pairing.
-*  Pair and Notify examples.
+-  ``Agent`` and ``AgentManager`` classes to handle pairing.
+-  Pair and Notify examples.
 
 **Changed**
 
-*  Migrated to using safe callbacks from external vendor (kvn::safe_callback).
+-  Migrated to using safe callbacks from external vendor (kvn::safe_callback).
 
 
 [0.2.1] - 2022-02-13
@@ -74,7 +77,7 @@ The format is based on `Keep a Changelog`_, and this project adheres to
 
 **Changed**
 
-*  Minor renaming of function for style consistency.
+-  Minor renaming of function for style consistency.
 
 
 [0.2.0] - 2022-02-12
@@ -82,7 +85,7 @@ The format is based on `Keep a Changelog`_, and this project adheres to
 
 **Added**
 
-*  Support for the ``Battery1`` interface. *(Thanks ptenbrock!)*
+-  Support for the ``Battery1`` interface. *(Thanks ptenbrock!)*
 
 
 [0.1.1] - 2021-12-28
@@ -90,21 +93,21 @@ The format is based on `Keep a Changelog`_, and this project adheres to
 
 **Added**
 
-*  Function to access currently cached value from characteristics.
-*  ``Notifying`` property on ``Characteristic1``.
-*  Added ``OnDisconnected`` callback to ``Device1``.
-*  Added ``ServicesResolved`` callback to ``Device1``.
-*  Address and Thread sanitization options.
+-  Function to access currently cached value from characteristics.
+-  ``Notifying`` property on ``Characteristic1``.
+-  Added ``OnDisconnected`` callback to ``Device1``.
+-  Added ``ServicesResolved`` callback to ``Device1``.
+-  Address and Thread sanitization options.
 
 **Changed**
 
-*  All proxy and interface manipulation is now done through helper functions.
-*  Access to all interface properties is now thread-safe.
+-  All proxy and interface manipulation is now done through helper functions.
+-  Access to all interface properties is now thread-safe.
 
 **Fixed**
 
-*  Removed unnecessary ``<iostream>`` includes.
-*  Made sure all classes have proper virtual destructors.
+-  Removed unnecessary ``<iostream>`` includes.
+-  Made sure all classes have proper virtual destructors.
 
 
 [0.1.0] - 2021-12-14

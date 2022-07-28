@@ -65,7 +65,11 @@ std::map<uint16_t, std::vector<uint8_t>> Device1::ManufacturerData(bool refresh)
     return _manufacturer_data;
 }
 
-bool Device1::Paired() {
+bool Device1::Paired(bool refresh) {
+    if (refresh) {
+        property_refresh("Paired");
+    }
+
     std::scoped_lock lock(_property_update_mutex);
     return _properties["Paired"].get_boolean();
 }
