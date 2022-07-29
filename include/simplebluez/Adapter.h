@@ -12,6 +12,7 @@ namespace SimpleBluez {
 class Adapter : public SimpleDBus::Proxy {
   public:
     typedef Adapter1::DiscoveryFilter DiscoveryFilter;
+    typedef Adapter1::DiscoveryFilterTransport DiscoveryFilterTransport;
 
     Adapter(std::shared_ptr<SimpleDBus::Connection> conn, const std::string& bus_name, const std::string& path);
     virtual ~Adapter();

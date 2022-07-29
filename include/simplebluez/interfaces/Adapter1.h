@@ -16,7 +16,7 @@ class Adapter1 : public SimpleDBus::Interface {
       std::vector<std::string> UUIDs = {};
       std::optional<int16_t> RSSI;
       std::optional<uint16_t> Pathloss;
-      DiscoveryFilterTransport Transport = "auto";
+      DiscoveryFilterTransport Transport = DiscoveryFilterTransport::AUTO;
       bool DuplicateData = true;
       bool Discoverable = false;
       std::string Pattern = "";
