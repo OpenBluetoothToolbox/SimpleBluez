@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16.0)
+cmake_minimum_required(VERSION 3.16)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/find")
@@ -41,10 +41,10 @@ if(NOT SIMPLEBLUEZ_LOG_LEVEL)
     set(SIMPLEBLUEZ_LOG_LEVEL "FATAL")
 endif()
 
-include_directories(${SIMPLEDBUS_INCLUDES})
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/legacy)
+set(
+    SIMPLEBLUEZ_USER_INCLUDE_DIRS
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
 
 message(STATUS "Configuring SimpleBluez")
 file(GLOB_RECURSE SRC_simplebluez_FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
@@ -64,24 +64,16 @@ set_target_properties(
     OUTPUT_NAME simplebluez
 )
 
-target_compile_definitions(simplebluez PRIVATE SIMPLEBLUEZ_LOG_LEVEL=${SIMPLEBLUEZ_LOG_LEVEL})
+target_include_directories(simplebluez PRIVATE ${SIMPLEBLUEZ_USER_INCLUDE_DIRS})
 
+target_compile_definitions(simplebluez PRIVATE SIMPLEBLUEZ_LOG_LEVEL=${SIMPLEBLUEZ_LOG_LEVEL})
 target_compile_options(simplebluez PRIVATE -Wfatal-errors -Wpedantic -O3 -Og)
 
 target_link_libraries(simplebluez PUBLIC simpledbus::simpledbus pthread)
 target_link_libraries(simplebluez PRIVATE fmt::fmt-header-only)
 
 # Export the variables needed by the parent project
-if(NOT ${STANDALONE})
-    set(
-        SIMPLEBLUEZ_INCLUDES
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/src
-        ${CMAKE_CURRENT_SOURCE_DIR}/src/legacy
-        ${SIMPLEDBUS_INCLUDES}
-        PARENT_SCOPE
-        )
-endif()
+target_include_directories(simplebluez INTERFACE ${SIMPLEBLUEZ_USER_INCLUDE_DIRS})
 
 # Append additional flags for address and thread sanitization
 if(SIMPLEBLUEZ_SANITIZE MATCHES "Address")

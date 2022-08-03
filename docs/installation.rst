@@ -28,7 +28,6 @@ dependencies, just clone the repository and link to it on your
 ::
 
    add_subdirectory(<path-to-simplebluez> ${CMAKE_BINARY_DIR}/simplebluez)
-   include_directories(${SIMPLEBLUEZ_INCLUDES})
 
 Build examples
 ~~~~~~~~~~~~~~

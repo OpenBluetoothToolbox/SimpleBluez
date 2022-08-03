@@ -9,7 +9,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Include SimpleBluez
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/.. ${CMAKE_BINARY_DIR}/simplebluez)
-include_directories(${SIMPLEBLUEZ_INCLUDES})
 
 find_package(Python3 COMPONENTS Development REQUIRED)
 

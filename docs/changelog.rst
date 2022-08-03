@@ -27,6 +27,7 @@ The format is based on `Keep a Changelog`_, and this project adheres to
 
 **Fixed**
 -  Accessing the ``Paired`` property of ``Device1`` would only use the cached value.
+-  Using the correct CMake functionality to export headers for all targets.
 
 
 [0.5.0] - 2022-06-12
