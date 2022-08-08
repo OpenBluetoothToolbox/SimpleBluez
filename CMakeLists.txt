@@ -89,13 +89,17 @@ endif()
 if(STANDALONE)
     message(STATUS "Generating install interface for SimpleBluez")
 
+    if (SIMPLEDBUS_VENDORIZE)
+        set(SIMPLEDBUS_TARGET simpledbus)
+    endif()
+
     include(GNUInstallDirs)
 
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/simplebluez.pc.in
                 ${CMAKE_CURRENT_BINARY_DIR}/simplebluez.pc @ONLY)
 
     install(
-        TARGETS simplebluez
+        TARGETS simplebluez ${SIMPLEDBUS_TARGET}
         EXPORT simplebluez-config
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
