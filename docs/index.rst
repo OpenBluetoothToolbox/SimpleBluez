@@ -4,9 +4,8 @@
    :maxdepth: 2
    :caption: The Basics
 
-   installation
    usage
-   security
+   api
    changelog
 
 

@@ -16,6 +16,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # Build artifacts in a separate folder
 add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/.. ${CMAKE_BINARY_DIR}/simplebluez)
 
+# TODO: Add local installation of examples!!
+
 add_subdirectory(list_adapters)
 add_subdirectory(list_paired)
 add_subdirectory(scan)

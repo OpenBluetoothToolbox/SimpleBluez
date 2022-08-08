@@ -29,22 +29,13 @@ else()
     set(STANDALONE false)
 endif()
 
-# For now, include dependencies as static packages on purpose.
-set(BUILD_SHARED_LIBS_SAVED "${BUILD_SHARED_LIBS}")
-set(BUILD_SHARED_LIBS OFF)
 set(SIMPLEDBUS_SANITIZE ${SIMPLEBLUEZ_SANITIZE})
 find_package(simpledbus REQUIRED)
 find_package(fmt REQUIRED)
-set(BUILD_SHARED_LIBS "${BUILD_SHARED_LIBS_SAVED}")
 
 if(NOT SIMPLEBLUEZ_LOG_LEVEL)
     set(SIMPLEBLUEZ_LOG_LEVEL "FATAL")
 endif()
-
-set(
-    SIMPLEBLUEZ_USER_INCLUDE_DIRS
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
 
 message(STATUS "Configuring SimpleBluez")
 file(GLOB_RECURSE SRC_simplebluez_FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
@@ -64,16 +55,16 @@ set_target_properties(
     OUTPUT_NAME simplebluez
 )
 
-target_include_directories(simplebluez PRIVATE ${SIMPLEBLUEZ_USER_INCLUDE_DIRS})
-
 target_compile_definitions(simplebluez PRIVATE SIMPLEBLUEZ_LOG_LEVEL=${SIMPLEBLUEZ_LOG_LEVEL})
 target_compile_options(simplebluez PRIVATE -Wfatal-errors -Wpedantic -O3 -Og)
 
-target_link_libraries(simplebluez PUBLIC simpledbus::simpledbus pthread)
-target_link_libraries(simplebluez PRIVATE fmt::fmt-header-only)
+target_link_libraries(simplebluez PRIVATE $<BUILD_INTERFACE:simpledbus::simpledbus> pthread)
+target_link_libraries(simplebluez PRIVATE $<BUILD_INTERFACE:fmt::fmt-header-only>)
 
-# Export the variables needed by the parent project
-target_include_directories(simplebluez INTERFACE ${SIMPLEBLUEZ_USER_INCLUDE_DIRS})
+target_include_directories(simplebluez PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(simplebluez INTERFACE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 # Append additional flags for address and thread sanitization
 if(SIMPLEBLUEZ_SANITIZE MATCHES "Address")
@@ -92,4 +83,35 @@ if(SIMPLEBLUEZ_SANITIZE MATCHES "Thread")
 
     target_compile_options(simplebluez PUBLIC ${SANITIZE_THREAD_COMPILE_OPTIONS})
     target_link_libraries(simplebluez PUBLIC ${SANITIZE_THREAD_LINK_OPTIONS})
+endif()
+
+
+if(STANDALONE)
+    message(STATUS "Generating install interface for SimpleBluez")
+
+    include(GNUInstallDirs)
+
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/simplebluez.pc.in
+                ${CMAKE_CURRENT_BINARY_DIR}/simplebluez.pc @ONLY)
+
+    install(
+        TARGETS simplebluez
+        EXPORT simplebluez-config
+        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+
+    install(
+        EXPORT simplebluez-config
+        NAMESPACE simplebluez::
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/simplebluez)
+
+    install(
+        DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/include/simplebluez/
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/simplebluez)
+
+    install(
+        FILES ${CMAKE_CURRENT_BINARY_DIR}/simplebluez.pc
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+
 endif()
