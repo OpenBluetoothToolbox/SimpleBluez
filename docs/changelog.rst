@@ -15,7 +15,6 @@ The format is based on `Keep a Changelog`_, and this project adheres to
 **Added**
 
 -  Support for characteristic descriptors. *(Thanks Symbitic!)*
--  Installation interface for the ``simplebluez`` library.
 
 **Changed**
 

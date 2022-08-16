@@ -29,9 +29,6 @@ Installing the Library
 
 After building the library you can install it by running :command:`sudo make install`.
 
-**NOTE:** If the library was compiled with ``SIMPLEDBUS_VENDORIZE`` set to ``TRUE``,
-          both SimpleBluez and SimpleDBus will be installed into the target location.
-
 
 Usage with CMake (Installed)
 ============================
