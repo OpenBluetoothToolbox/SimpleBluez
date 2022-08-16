@@ -12,15 +12,21 @@ SimpleBluez is a C++ implementation of the `Bluez`_ API on top of `SimpleDBus`_,
 conceived to be easy to integrate with a licence friendly for use with
 commercial projects.
 
-SimpleBluez designed to provide complete access to the underlying Bluez stack,
+It's designed to provide complete access to the underlying Bluez stack,
 requiring the user to properly handle any associated behaviors and side-effects.
-It also allows first-class support for vendorization of all 3rd-party libraries.
 
 If you want to use SimpleBluez and need help. **Please do not hesitate to reach out!**
 
-* Visit our `ReadTheDocs`_ page.
+* Visit our `ReadTheDocs`_ page. 
 * Join our `Discord`_ server.
 * Contact me: ``kevin at dewald dot me``
+
+Vendorization
+-------------
+If you are interested in using SimpleBluez as a dependency in your project,
+there is currently first-class support for vendorization of all 3rd-party
+dependencies. Please visit our **Security** page for more information on 
+how to vendorize 3rd-party libraries for SimpleBluez.
 
 License
 -------

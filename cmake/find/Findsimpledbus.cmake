@@ -26,12 +26,7 @@ if (SIMPLEDBUS_VENDORIZE)
         if(NOT simpledbus_POPULATED)
             FetchContent_Populate(simpledbus)
             list(APPEND CMAKE_MODULE_PATH "${simpledbus_SOURCE_DIR}/cmake/find")
-
-            # If vendorizing SimpleDBus, it should always be built as a static library.
-            set(BUILD_SHARED_LIBS_SAVED "${BUILD_SHARED_LIBS}")
-            set(BUILD_SHARED_LIBS OFF)
-            add_subdirectory(${simpledbus_SOURCE_DIR} ${simpledbus_BINARY_DIR})
-            set(BUILD_SHARED_LIBS "${BUILD_SHARED_LIBS_SAVED}")
+            add_subdirectory("${simpledbus_SOURCE_DIR}" "${simpledbus_BINARY_DIR}")
         endif()
 
     else()
@@ -46,9 +41,5 @@ if (SIMPLEDBUS_VENDORIZE)
     # found in the documentation of find_package() and
     # https://cmake.org/cmake/help/latest/manual/cmake-developer.7.html
     set(simpledbus_FOUND 1)
-
-else()
-
-    find_package(simpledbus CONFIG REQUIRED)
 
 endif()
