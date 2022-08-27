@@ -9,23 +9,18 @@
 
 namespace SimpleBluez {
 
-class GattCharacteristic1 : public SimpleDBus::Interface {
+class GattDescriptor1 : public SimpleDBus::Interface {
   public:
-    typedef enum { REQUEST = 0, COMMAND } WriteType;
-
-    GattCharacteristic1(std::shared_ptr<SimpleDBus::Connection> conn, std::string path);
-    virtual ~GattCharacteristic1();
+    GattDescriptor1(std::shared_ptr<SimpleDBus::Connection> conn, std::string path);
+    virtual ~GattDescriptor1();
 
     // ----- METHODS -----
-    void StartNotify();
-    void StopNotify();
-    void WriteValue(const ByteArray& value, WriteType type);
+    void WriteValue(const ByteArray& value);
     ByteArray ReadValue();
 
     // ----- PROPERTIES -----
     std::string UUID();
     ByteArray Value();
-    bool Notifying(bool refresh = true);
 
     // ----- CALLBACKS -----
     kvn::safe_callback<void()> OnValueChanged;

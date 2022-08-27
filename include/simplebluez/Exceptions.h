@@ -29,6 +29,15 @@ class CharacteristicNotFoundException : public BaseException {
     std::string _message;
 };
 
+class DescriptorNotFoundException : public BaseException {
+  public:
+    DescriptorNotFoundException(const std::string& descriptor);
+    const char* what() const noexcept override;
+
+  private:
+    std::string _message;
+};
+
 }  // namespace Exception
 
 }  // namespace SimpleBluez

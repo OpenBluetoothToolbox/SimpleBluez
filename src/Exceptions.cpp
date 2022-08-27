@@ -18,6 +18,12 @@ CharacteristicNotFoundException::CharacteristicNotFoundException(const std::stri
 
 const char* CharacteristicNotFoundException::what() const noexcept { return _message.c_str(); }
 
+DescriptorNotFoundException::DescriptorNotFoundException(const std::string& descriptor) {
+    _message = fmt::format("Descriptor {} not found.", descriptor);
+}
+
+const char* DescriptorNotFoundException::what() const noexcept { return _message.c_str(); }
+
 }  // namespace Exception
 
 }  // namespace SimpleBluez

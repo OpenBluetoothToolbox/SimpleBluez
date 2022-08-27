@@ -1,7 +1,7 @@
 #pragma once
 
-#include <simpledbus/external/kvn_safe_callback.hpp>
 #include <simpledbus/advanced/Interface.h>
+#include <simpledbus/external/kvn_safe_callback.hpp>
 
 #include <string>
 
@@ -25,7 +25,7 @@ class Device1 : public SimpleDBus::Interface {
     std::string Alias();
     std::string Name();
     std::map<uint16_t, std::vector<uint8_t>> ManufacturerData(bool refresh = true);
-    bool Paired();
+    bool Paired(bool refresh = true);
     bool Connected(bool refresh = true);
     bool ServicesResolved(bool refresh = true);
 
