@@ -2,13 +2,25 @@
 
 #include <simpledbus/advanced/Interface.h>
 
+#include <optional>
 #include <string>
+#include <vector>
 
 namespace SimpleBluez {
 
 class Adapter1 : public SimpleDBus::Interface {
   public:
-    typedef enum { AUTO, BREDR, LE } DiscoveryFilter;
+    typedef enum { AUTO, BREDR, LE } DiscoveryFilterTransport;
+  
+    struct DiscoveryFilter {
+      std::vector<std::string> UUIDs = {};
+      std::optional<int16_t> RSSI;
+      std::optional<uint16_t> Pathloss;
+      DiscoveryFilterTransport Transport = DiscoveryFilterTransport::AUTO;
+      bool DuplicateData = true;
+      bool Discoverable = false;
+      std::string Pattern = "";
+    };
 
     Adapter1(std::shared_ptr<SimpleDBus::Connection> conn, std::string path);
     virtual ~Adapter1() = default;
